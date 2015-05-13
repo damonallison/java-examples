@@ -1,0 +1,37 @@
+.notebook
+*.orig
+.pt
+.sass-cache
+.DS_Store
+.tmtags
+*.swp
+*.pyc
+*.livereload
+.tags
+_assets
+
+# Local IDE Files
+.metadata
+.recommenders
+.org.eclipse.jdt.core.external.folders/.project
+*.sublime-workspace
+*.upgrade
+*org.eclipse.jdt.groovy.core.prefs
+.idea
+*.iml
+*.eml
+!pro_core/content/Default/emails/*.eml
+.ant_targets
+out/
+
+# Recovery log
+RECOVERY_LOG_TRIGGER
+RECOVERY_LOG_FAILURE
+recovery-*.log
+
+# Packaging
+build_output_packages/
+build_temp/
+
+# TEMPORARY for pulling client into core
+core_client
