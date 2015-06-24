@@ -1,8 +1,6 @@
 package com.damonallison.tests;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -10,102 +8,15 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Callable;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import com.damonallison.annotations.ClassHeader;
 import com.damonallison.classes.Bike;
 import com.damonallison.classes.Bike.BikeBuilder;
-import com.damonallison.utils.DaysOfTheWeek;
-import com.damonallison.utils.Language;
 
-@ClassHeader(author = "Damon Allison", date = "2015/05/11", reviewers = {
-		"Damon", "Allison" })
 public class AllTests {
-
-	/**
-	 * A simple interface that will be used to illustrate anonymous functions.
-	 * An anonymous concrete class will be created that implements this
-	 * interface.
-	 * 
-	 * <pre>
-	 * {@code
-	 * IRun runner = new IRun() {
-	 *   public bool run() {
-	 *     return true;
-	 *   }
-	 * }
-	 * </pre>
-	 *
-	 */
-	private interface IRun {
-		boolean run();
-	}
-
-	@Test
-	public void testAnonymousClasses() {
-		int x = 10;
-		IRun runner = new IRun() {
-
-			// NOTE : you cannot declare constructors in an anonymous class.
-			@Override
-			public boolean run() {
-				return x > 1;
-			}
-		};
-		assertTrue(runner.run());
-	}
-
-	@Test
-	public void testAnonymousClasses2() throws Exception {
-
-		// Anonymous classes can only capture final or "effectively final"
-		// variables.
-		// Don't rely on "effectively final". If they are going to be captured,
-		// just make them final.
-		final Integer capturedInt = 100;
-		Callable<Integer> callable = new Callable<Integer>() {
-
-			@Override
-			public Integer call() {
-				return capturedInt;
-			}
-
-		};
-		assertTrue(callable.call() == 100);
-	}
-
-	@Test
-	public void testEnums() {
-
-		// Enums can have methods.
-		assertTrue(DaysOfTheWeek.SATURDAY.isWeekend());
-
-		// Enums extend from java.lang.Enum and therefore
-		// inherit all the properties from that structure.
-		for (DaysOfTheWeek d : DaysOfTheWeek.values()) {
-
-			// Creating an enum value from a string.
-			DaysOfTheWeek d2 = DaysOfTheWeek.valueOf(d.name());
-			assertTrue(d == d2);
-			assertEquals(d, d2);
-		}
-	}
-
-	@Test
-	public void testLanguage() {
-		final Language lang = new Language();
-		assertEquals("i know you, damon", lang.switchExample("damon"));
-		assertEquals("who are you?", lang.switchExample("unknown"));
-		assertNull(lang.switchExample(null));
-
-		String[] expected = new String[] { "damon", "allison" };
-		assertArrayEquals(expected, lang.varArgsExample("damon", "allison"));
-
-	}
 
 	@Test
 	public void testInnerClass() {
@@ -154,29 +65,44 @@ public class AllTests {
 		return ret;
 	}
 
-	private class BikeComparator implements Comparator<Bike> {
+	/**
+	 * Sorts bikes by speed, ascending.
+	 */
+	private class SpeedComparator implements Comparator<Bike> {
 		public int compare(Bike a, Bike b) {
-			return Integer.compare(b.getSpeed(), a.getSpeed());
+			return Integer.compare(a.getSpeed(), b.getSpeed());
 		}
 	}
 
+	/**
+	 * Lambda expressions allow you to express instances of single-method
+	 * classes more compactly.
+	 * 
+	 * Any interface that is a "functional interface" - an interface that
+	 * contains only *1* abstract method - can be represented with a lambda
+	 * expression.
+	 * 
+	 * The lambda expression creates a class that implements the interface
+	 * without having to specify the name of the interface's method.
+	 * 
+	 * GOLDEN RULE : LAMBDA EXPRESSIONS ONLY WORK FOR FUNCTIONAL INTERFACES.
+	 */
 	@Test
 	public void testLambdaExpressions() {
 		final ArrayList<Bike> bikes = new ArrayList<Bike>();
 		BikeBuilder bb = new Bike.BikeBuilder();
-		for (int i = 1; i < 100; i++) {
+
+		// Adding in reverse order to test sort later on.
+		for (int i = 99; i >= 1; i--) {
 			bb.setSpeed(i);
 			bb.setGear(i);
 			bb.setWheelCount(i);
 			bikes.add(bb.build());
 		}
 
-		// Filter
-		//
-		// We simply pass the lambda in place of a dedicated "Predicate<Bike>"
-		// instance. This works because Predicate<T> is a functional interface.
-		//
-
+		/**
+		 * Filter - using a predicate.
+		 */
 		Predicate<Bike> p = new Predicate<Bike>() {
 			@Override
 			public boolean test(Bike b) {
@@ -184,27 +110,61 @@ public class AllTests {
 			}
 		};
 		ArrayList<Bike> f = this.filter(bikes, p);
+
+		/**
+		 * Filter - using a lambda expression.
+		 * 
+		 * This lambda expression implements the Predicate<T> interface and the
+		 * 'test' method.
+		 * 
+		 * Notice that single line lambda expressions can omit the "return"
+		 * keyword and {} block.
+		 */
 		ArrayList<Bike> filtered = this.filter(bikes,
 				(b) -> b.getGear() % 2 == 0);
-		assertTrue(filtered.size() == 49); // Evens 2 - 98
+		assertTrue(filtered.size() == 49); // Evens 98 -> 2
 		assertEquals(f, filtered);
 
-		// Streams look promising.
-		List<Bike> filtered2 = bikes.stream().filter(b -> {
-			// manually making this a multiple statement block
-			// to prove we can use generic blocks as functions.
-				int gear = b.getGear();
-				return gear % 2 == 0;
-			}).collect(Collectors.toList());
+		/**
+		 * Streams (Java 1.8) provide a sequential stream of objects which can
+		 * be processed functionally.
+		 * 
+		 * Operations on streams are called "aggregate operations" in the java
+		 * docs. Aggregate (stream) operations are pipeline based - think
+		 * reactive programming.
+		 */
+		List<Bike> filtered2 = bikes
+				.stream()
+				.parallel()
+				.filter(b -> {
+					/**
+					 * Because we are on a parallel stream, this filtering will
+					 * be done concurrently.
+					 * 
+					 * Note : this function was manually split into two lines to
+					 * show that anonymous functions can be implemented with a
+					 * block rather than as a single line.
+					 */
+					int gear = b.getGear();
+					return gear % 2 == 0;
+				})
+				.sequential()
+				.sorted((b, b2) -> new Integer(b.getGear())
+						.compareTo((Integer) b2.getGear()))
+				.collect(Collectors.toList());
+
 		assertTrue(filtered2.size() == 49);
+		assertTrue("Should be sorted by gear, ascending", //
+				filtered2.get(0).getGear() == 2);
 
 		// Map
 		int[] gearMap = bikes.stream().mapToInt(bike -> bike.getGear())
 				.toArray();
 
-		assertTrue(gearMap[gearMap.length - 1] == 99);
+		assertTrue(gearMap[0] == 99);
+		assertTrue(gearMap[gearMap.length - 1] == 1);
 
-		// Sort
+		// Array Sort
 		//
 		// Is there any better way to create a strongly typed array?
 		// This *should be* a one-line function!
@@ -212,33 +172,59 @@ public class AllTests {
 		Bike[] bikeArray = new Bike[bikes.size()];
 		bikes.toArray(bikeArray);
 
-		assertTrue(bikeArray[0].getSpeed() == 1);
-		assertTrue(bikeArray[bikeArray.length - 1].getSpeed() == 99);
-
-		// Sorts by speed, descending.
-		// Uses a strongly typed Comparator object.
-		Arrays.sort(bikeArray, (a, b) -> new BikeComparator().compare(a, b));
-
 		assertTrue(bikeArray[0].getSpeed() == 99);
 		assertTrue(bikeArray[bikeArray.length - 1].getSpeed() == 1);
 
-		// Method references
-		//
-		// Rather than calling an existing method via a lambda expression, a
-		// method reference could be used.
+		// Sorts by speed, descending.
+		// Uses a strongly typed Comparator object.
+		Arrays.sort(bikeArray, (a, b) -> new SpeedComparator().compare(a, b));
+		assertTrue(bikeArray[0].getSpeed() == 1);
+		assertTrue(bikeArray[bikeArray.length - 1].getSpeed() == 99);
 
-		BikeComparator bc = new BikeComparator();
+		/**
+		 * Method References
+		 * 
+		 * If a lambda expressiond does nothing but invoke a method like
+		 * "compare" above, you can use a metho reference.
+		 * 
+		 * A method reference *is* a lambda expression
+		 * 
+		 */
 		Bike[] bikeArray2 = new Bike[bikes.size()];
 		bikes.toArray(bikeArray2);
 
-		assertTrue(bikeArray2[0].getSpeed() == 1);
-		assertTrue(bikeArray2[bikeArray2.length - 1].getSpeed() == 99);
+		assertTrue(bikeArray2[0].getSpeed() == 99);
+		assertTrue(bikeArray2[bikeArray2.length - 1].getSpeed() == 1);
 
 		// Method reference example. Notice we don't use a lambda expression
 		// as we do above with : (a, b) -> new BikeComparator().compare(a, b)
-		Arrays.sort(bikeArray2, bc::compare);
+		Arrays.sort(bikeArray2, (new SpeedComparator())::compare);
 
-		assertTrue(bikeArray2[0].getSpeed() == 99);
-		assertTrue(bikeArray2[bikeArray2.length - 1].getSpeed() == 1);
+		assertTrue(bikeArray2[0].getSpeed() == 1);
+		assertTrue(bikeArray2[bikeArray2.length - 1].getSpeed() == 99);
+	}
+
+	@Test
+	public void testLambdaExpressionSyntax() {
+
+		Predicate<String> isLongAnonymousClass = new Predicate<String>() {
+			public boolean test(String s) {
+				return s.length() > 10;
+			}
+		};
+
+		assertTrue(!isLongAnonymousClass.test("damon"));
+		assertTrue(isLongAnonymousClass.test("damon allison"));
+
+		/**
+		 * Lambda expressions are simply syntactic shortcuts for implementing an
+		 * interface with a single abstract method. Rather than creating an
+		 * anonymous class and overriding the single method as we did above,
+		 * lambda expressions allow you to simplify the syntax.
+		 */
+		Predicate<String> isLongLambdaExpression = s -> s.length() > 10;
+
+		assertTrue(!isLongLambdaExpression.test("damon"));
+		assertTrue(isLongLambdaExpression.test("damon allison"));
 	}
 }

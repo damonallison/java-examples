@@ -35,3 +35,6 @@ build_temp/
 
 # TEMPORARY for pulling client into core
 core_client
+
+## Java
+bin

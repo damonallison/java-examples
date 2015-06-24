@@ -6,7 +6,7 @@ package com.damonallison.utils;
  * All java enums inherit from java.lang.Enum. An enum cannot extend anything
  * else.
  * 
- * @author dallison
+ * @author Damon Allison
  *
  */
 public enum DaysOfTheWeek {
@@ -27,8 +27,6 @@ public enum DaysOfTheWeek {
 	 *
 	 * Constructors must be private or package-private (no modifier). This
 	 * example is package-private.
-	 * 
-	 * @param myName
 	 */
 	DaysOfTheWeek(String slangName) {
 		this.slangName = slangName;

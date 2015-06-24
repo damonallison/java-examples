@@ -3,32 +3,69 @@ package com.damonallison.classes;
 /**
  * The bike class shows various class features that are a bit more advanced.
  * 
- * - Initializer Blocks - Inner classes / Builder pattern / fluid interface -
+ * <ul>
+ * <li>
+ * Initializer blocks : static and instance initializer blocks are executed
+ * prior to the first usage of a class (static initializer blocks) or an
+ * instance of the class (instance initializer blocks)
+ * <li>
+ * Inner classes
+ * <li>
+ * Builder pattern
+ * <li>
+ * fluid interface : A fluid interface returns the current object instance
+ * itself which allows you to chain multiple calls together.
+ * 
+ * <code>
+ *   Bike.Builder b = new Bike.BikeBuilder();
+ *   b.setSpeed(10)
+ *    .setWheelCount(2)
+ *    .setGear(100);
+ * </code>
+ * <li>
  * Finalizers
  * 
- * @author dallison
- *
+ * @author Damon Allison
  */
-public class Bike {
+public class Bike implements IBike {
 
 	private int speed;
 	private int gear;
 	private int wheelCount;
 
 	// Variables can be initialized to the results of a method call.
-	private static final boolean CREATED = initializeClassVariable();
+	// These are set before the static initializer block (for static
+	// variables or constructor (for instance variables).
+	public static final boolean CLASS_CREATED = initializeClassVariable();
+	private final boolean INSTANCE_CREATED = initializeInstanceVariable();
 
-	protected static final boolean initializeClassVariable() {
+	private static boolean STATIC_CONSTRUCTOR_INVOKED;
+
+	protected static boolean initializeClassVariable() {
 		return true;
 	}
 
+	protected boolean initializeInstanceVariable() {
+		return true;
+	}
+
+	public static boolean staticConstrucoreInvoked() {
+		return STATIC_CONSTRUCTOR_INVOKED;
+	}
+
 	/**
-	 * Static initializer block.
+	 * Static initializer block
 	 * 
-	 * Executed once, before any instance is created.
+	 * Static initializer blocks are executed before any instance is created. If
+	 * there are multiple static initializer blocks, they are executed in the
+	 * order they appear in the source code.
 	 */
 	static {
-		System.out.println("static initializer block");
+		STATIC_CONSTRUCTOR_INVOKED = true;
+	}
+
+	static {
+		// This static initializer would execute second.
 	}
 
 	/**
@@ -37,14 +74,21 @@ public class Bike {
 	 * Initializer blocks are injected and executed before every constructor
 	 * invocation.
 	 * 
+	 * Like static initializer blocks, they are executed in the order they are
+	 * defined in the source.
+	 * 
 	 * A better pattern is to have a designated initializer and make all other
 	 * constructors invoke it.
 	 */
 	{
-		System.out.println("initializer block");
+		System.out.println("initializer 1");
 		speed = 0;
 		gear = 0;
 		wheelCount = 0;
+	}
+
+	{
+		System.out.println("initializer 2");
 	}
 
 	/**
@@ -53,8 +97,8 @@ public class Bike {
 	 */
 	protected Bike(int speed, int gear, int wheelCount) {
 
-		assert (CREATED);
-
+		assert (CLASS_CREATED);
+		assert (INSTANCE_CREATED);
 		this.speed = speed;
 		this.gear = gear;
 		this.wheelCount = wheelCount;
