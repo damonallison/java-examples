@@ -2,9 +2,8 @@
 
 This project is a collection of java sources and tests that I wrote while attempting to learn Java. 
 
-## BOOKMARK -- START HERE ##
-
-https://docs.oracle.com/javase/tutorial/java/nutsandbolts/operators.html
+## BOOKMARK -- START HERE (Classes and Objects) ##
+https://docs.oracle.com/javase/tutorial/java/javaOO/index.html
 
 #### Books ####
 

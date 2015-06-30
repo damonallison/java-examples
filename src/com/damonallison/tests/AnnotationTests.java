@@ -14,16 +14,12 @@ import com.google.common.collect.Sets;
  * Type annotations were created to support stronger type checking. This allows
  * you to use type checking tools (frameworks). Type annotations allow you to
  * build on top of the java type system.
- * 
- * 
+ * <p>
  * For example, if you want to ensure a variable is never assigned to
  * {@code null}, you could annotate that variable with the {@code NonNull}
  * attribute. When compiling the code with the "nonnull check framework" (or
  * whatever framework is providing NonNull checks), the compiler will print a
  * warning if it detects a potential null assignment.
- * 
- * 
- * 
  */
 @ClassHeader(author = "Damon Allison", date = "2015/05/11", reviewers = { "Chris Koehnen" })
 @ClassHeader(author = "Chris Koehnen", date = "2015/05/12", reviewers = { "Damon Allison" })
@@ -55,7 +51,6 @@ public class AnnotationTests {
 		/**
 		 * Retrieve a repeated annotation.
 		 */
-
 		ClassHeader[] annotations = AnnotationTests.class
 				.getAnnotationsByType(ClassHeader.class);
 
