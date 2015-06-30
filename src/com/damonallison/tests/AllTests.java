@@ -21,7 +21,7 @@ public class AllTests {
 	@Test
 	public void testInnerClass() {
 
-		BikeBuilder bb = new BikeBuilder();
+		BikeBuilder bb = BikeBuilder.newBuilder();
 		bb.setSpeed(10);
 		bb.setGear(1);
 		Bike b = bb.build();
@@ -90,7 +90,7 @@ public class AllTests {
 	@Test
 	public void testLambdaExpressions() {
 		final ArrayList<Bike> bikes = new ArrayList<Bike>();
-		BikeBuilder bb = new Bike.BikeBuilder();
+		BikeBuilder bb = BikeBuilder.newBuilder();
 
 		// Adding in reverse order to test sort later on.
 		for (int i = 99; i >= 1; i--) {

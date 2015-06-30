@@ -25,10 +25,11 @@ public enum DaysOfTheWeek {
 	 * Enums are actual classes. We can create constructors and hold state on
 	 * the enum types themselves.
 	 *
-	 * Constructors must be private or package-private (no modifier). This
-	 * example is package-private.
+	 * Enum constructors *could* be left as package-private, however the
+	 * compiler will still compile them as private. There is no such thing as a
+	 * package-private enum constructor - only private.
 	 */
-	DaysOfTheWeek(String slangName) {
+	private DaysOfTheWeek(String slangName) {
 		this.slangName = slangName;
 	}
 

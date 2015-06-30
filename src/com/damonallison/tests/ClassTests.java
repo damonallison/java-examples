@@ -1,12 +1,26 @@
 package com.damonallison.tests;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import com.damonallison.classes.Bike;
+import com.damonallison.classes.MountainBike;
+import com.damonallison.classes.MountainBike.MountainBikeBuilder;
 
 public class ClassTests {
+
+	@Test
+	public void testStatic() {
+		MountainBikeBuilder builder = MountainBikeBuilder.newBuilder();
+		builder.setGear(10);
+		builder.setWheelCount(2);
+		builder.setSpeed(20);
+		builder.setMaxElevation(100);
+		MountainBike mb = builder.build();
+		assertEquals(100, mb.getMaxElevation());
+	}
 
 	@Test
 	public void testStaticInstanceVariables() {
@@ -17,5 +31,21 @@ public class ClassTests {
 		 */
 		assertTrue(Bike.CLASS_CREATED);
 		assertTrue(Bike.staticConstrucoreInvoked());
+	}
+
+	/**
+	 * Nested static classes are different than non-static "inner classes".
+	 * Nested static classes do not need an instance of the outer class to
+	 * create or use.
+	 * 
+	 * In this example, we are creating and using a nested static class without
+	 * having to create a {@code Bike} object first.
+	 */
+	@Test
+	public void testNestedStaticClasses() {
+
+		Bike.BikeBuilder bb = Bike.BikeBuilder.newBuilder();
+		Bike b = bb.setGear(10).setSpeed(10).setWheelCount(2).build();
+		assertEquals(2, b.getWheelCount());
 	}
 }

@@ -2,8 +2,9 @@
 
 This project is a collection of java sources and tests that I wrote while attempting to learn Java. 
 
-## BOOKMARK -- START HERE (Classes and Objects) ##
-https://docs.oracle.com/javase/tutorial/java/javaOO/index.html
+## BOOKMARK -- START HERE (Nested Classes) ##
+
+https://docs.oracle.com/javase/tutorial/java/javaOO/nested.html
 
 #### Books ####
 
@@ -22,7 +23,9 @@ Written by Josh Block, responsible for Java API development at Sun.
 * Guava : anything by Google.
 * Analytics tools : cyclomatic complexity, unit test code coverage, LOC, etc. 
 * New Java 8 Features (streams, parallel sorts, lambda expressions)
-
+* Enum types (holding variable state)
+	* Write an example of an enum singleton. 
+	
 #### Questions ####
 
 * Hotspot : what optimizations does the HotSpot JVM provide?

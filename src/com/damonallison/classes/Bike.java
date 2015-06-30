@@ -35,17 +35,16 @@ public class Bike implements IBike {
 
 	// Variables can be initialized to the results of a method call.
 	// These are set before the static initializer block (for static
-	// variables or constructor (for instance variables).
+	// variables) or constructor (for instance variables).
 	public static final boolean CLASS_CREATED = initializeClassVariable();
+	public static final boolean STATIC_CONSTRUCTOR_INVOKED;
 	private final boolean INSTANCE_CREATED = initializeInstanceVariable();
 
-	private static boolean STATIC_CONSTRUCTOR_INVOKED;
-
-	protected static boolean initializeClassVariable() {
+	private static boolean initializeClassVariable() {
 		return true;
 	}
 
-	protected boolean initializeInstanceVariable() {
+	private boolean initializeInstanceVariable() {
 		return true;
 	}
 
@@ -65,7 +64,7 @@ public class Bike implements IBike {
 	}
 
 	static {
-		// This static initializer would execute second.
+		// This static initializer will execute second.
 	}
 
 	/**
@@ -91,10 +90,6 @@ public class Bike implements IBike {
 		System.out.println("initializer 2");
 	}
 
-	/**
-	 * Notice the constructor is private - all building must be done by
-	 * BikeBuilder.
-	 */
 	protected Bike(int speed, int gear, int wheelCount) {
 
 		assert (CLASS_CREATED);
@@ -116,39 +111,6 @@ public class Bike implements IBike {
 		}
 		if (wheelCount < 0) {
 			throw new IllegalArgumentException("wheelCount must be >= 0");
-		}
-	}
-
-	public static class BikeBuilder {
-		protected int speed;
-		protected int gear;
-		protected int wheelCount;
-
-		/**
-		 * Any required fields could be passed to the constructor to prevent an
-		 * invalid object from being initialized.
-		 */
-		public BikeBuilder() {
-
-		}
-
-		public BikeBuilder setSpeed(int speed) {
-			this.speed = speed;
-			return this;
-		}
-
-		public BikeBuilder setGear(int gear) {
-			this.gear = gear;
-			return this;
-		}
-
-		public BikeBuilder setWheelCount(int wheelCount) {
-			this.wheelCount = wheelCount;
-			return this;
-		}
-
-		public Bike build() {
-			return new Bike(this.speed, this.gear, this.wheelCount);
 		}
 	}
 
@@ -213,4 +175,44 @@ public class Bike implements IBike {
 	public void deltaSpeed(int amount) {
 		speed += amount;
 	}
+
+	/**
+	 * BikeBuilder is declared as a nested static class.
+	 * 
+	 * Why nested? Because it's a helper class for {@code Bike}.
+	 * 
+	 * Why static? So we do not need an instance of {@code Bike} to use it.
+	 */
+	public static class BikeBuilder {
+		protected int speed;
+		protected int gear;
+		protected int wheelCount;
+
+		protected BikeBuilder() {
+		}
+
+		public static BikeBuilder newBuilder() {
+			return new BikeBuilder();
+		}
+
+		public BikeBuilder setSpeed(int speed) {
+			this.speed = speed;
+			return this;
+		}
+
+		public BikeBuilder setGear(int gear) {
+			this.gear = gear;
+			return this;
+		}
+
+		public BikeBuilder setWheelCount(int wheelCount) {
+			this.wheelCount = wheelCount;
+			return this;
+		}
+
+		public Bike build() {
+			return new Bike(this.speed, this.gear, this.wheelCount);
+		}
+	}
+
 }

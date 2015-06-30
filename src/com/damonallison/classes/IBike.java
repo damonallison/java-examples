@@ -9,8 +9,6 @@ public interface IBike {
 
 	/**
 	 * Enums can be added to interfaces. If you really want to..
-	 * 
-	 * @author Damon Allison
 	 */
 	enum BikeSize {
 		CHILD, //

@@ -23,8 +23,11 @@ public class MountainBike extends Bike {
 	public static class MountainBikeBuilder extends BikeBuilder {
 		private int maxElevation;
 
-		public MountainBikeBuilder() {
+		private MountainBikeBuilder() {
+		}
 
+		public static MountainBikeBuilder newBuilder() {
+			return new MountainBikeBuilder();
 		}
 
 		public MountainBikeBuilder setMaxElevation(int maxElevation) {
