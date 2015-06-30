@@ -6,21 +6,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.damonallison.classes.Bike;
-import com.damonallison.classes.MountainBike;
-import com.damonallison.classes.MountainBike.MountainBikeBuilder;
 
 public class ClassTests {
-
-	@Test
-	public void testStatic() {
-		MountainBikeBuilder builder = MountainBikeBuilder.newBuilder();
-		builder.setGear(10);
-		builder.setWheelCount(2);
-		builder.setSpeed(20);
-		builder.setMaxElevation(100);
-		MountainBike mb = builder.build();
-		assertEquals(100, mb.getMaxElevation());
-	}
 
 	@Test
 	public void testStaticInstanceVariables() {
