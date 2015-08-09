@@ -1,4 +1,4 @@
-package com.damonallison.tests;
+package com.damonallison.tests.classes;
 
 import static org.junit.Assert.assertTrue;
 
@@ -81,5 +81,7 @@ public class AnonymousClassesTests {
 		};
 		assertTrue(callable.call() == 100);
 	}
+
+
 
 }

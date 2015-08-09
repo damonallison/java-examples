@@ -8,19 +8,16 @@ package com.damonallison.classes;
 public interface IBike {
 
 	/**
-	 * Enums can be added to interfaces. If you really want to..
+	 * Enums can be added to interfaces. If you really want to.
 	 */
 	enum BikeSize {
-		CHILD, //
-		FEMALE, //
+		CHILD,
+		FEMALE,
 		MALE
 	}
 
 	/**
-	 * Interfaces can contain static methods.
-	 * 
-	 * A random static method to show that you can define static methods on an
-	 * interface. If you really want to.
+	 * Interfaces can contain static methods. If you really want to.
 	 */
 	static int add(int x, int y) {
 		return x + y;
@@ -33,7 +30,7 @@ public interface IBike {
 	 * modifiers don't need to be specified. They are specified here to be
 	 * explicit.
 	 */
-	static final int DEFAULT_WHEELS = 2;
+	int DEFAULT_WHEELS = 2;
 
 	int getSpeed();
 

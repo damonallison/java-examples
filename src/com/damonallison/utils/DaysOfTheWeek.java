@@ -11,25 +11,23 @@ package com.damonallison.utils;
  */
 public enum DaysOfTheWeek {
 
-	SUNDAY("lazy"), //
-	MONDAY("uhhh"), //
-	TUESDAY("uh"), //
-	WEDNESDAY("hump"), //
-	THURSDAY("better"), //
-	FRIDAY("tgif"), //
+	SUNDAY("lazy"),
+	MONDAY("uhhh"),
+	TUESDAY("uh"),
+	WEDNESDAY("hump"),
+	THURSDAY("better"),
+	FRIDAY("tgif"),
 	SATURDAY("party");
 
 	private String slangName;
 
 	/**
 	 * Enums are actual classes. We can create constructors and hold state on
-	 * the enum types themselves.
+	 * the enum types themselves..
 	 *
-	 * Enum constructors *could* be left as package-private, however the
-	 * compiler will still compile them as private. There is no such thing as a
-	 * package-private enum constructor - only private.
+	 * Enum constructors are always private.
 	 */
-	private DaysOfTheWeek(String slangName) {
+	DaysOfTheWeek(String slangName) {
 		this.slangName = slangName;
 	}
 

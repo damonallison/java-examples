@@ -13,7 +13,7 @@ package com.damonallison.classes;
  * <li>
  * Builder pattern
  * <li>
- * fluid interface : A fluid interface returns the current object instance
+ * Fluid Interface : A fluid interface returns the current object instance
  * itself which allows you to chain multiple calls together.
  * 
  * <code>
@@ -29,6 +29,7 @@ package com.damonallison.classes;
  */
 public class Bike implements IBike {
 
+
 	private int speed;
 	private int gear;
 	private int wheelCount;
@@ -38,6 +39,7 @@ public class Bike implements IBike {
 	// variables) or constructor (for instance variables).
 	public static final boolean CLASS_CREATED = initializeClassVariable();
 	public static final boolean STATIC_CONSTRUCTOR_INVOKED;
+
 	private final boolean INSTANCE_CREATED = initializeInstanceVariable();
 
 	private static boolean initializeClassVariable() {

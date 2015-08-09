@@ -1,4 +1,4 @@
-package com.damonallison.tests;
+package com.damonallison.tests.classes;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

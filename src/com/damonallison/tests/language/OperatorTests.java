@@ -1,47 +1,41 @@
-package com.damonallison.tests;
+package com.damonallison.tests.language;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
+import com.google.common.base.Preconditions;
 import org.junit.Test;
 
-import com.damonallison.utils.DaysOfTheWeek;
-import com.damonallison.utils.Language;
-import com.google.common.base.Preconditions;
+import static org.junit.Assert.*;
 
-public class LanguageTests {
+/**
+ * Examples of rather obscure operator usage that I'll probably forget.
+ */
+public class OperatorTests {
 
 	/**
-	 * Shows:
-	 * <ol>
-	 * <li>Multiple variable declarations can happen on a single line.</li>
-	 * <li>Assignment is R to L. Multiple assignment can happen on a single
-	 * line.</li>
-	 * <li>Logical compliment operator can be used on boolean expressions</li>
-	 * </ol>
+	 * Multiple variable declarations can happen on a single line. Assignment is R to L.
 	 */
 	@Test
-	public void testAssignmentAndLogicalCompliment() {
-		// Multiple declarations are allowed on a single line. Separate with
-		// commas.
-		int x = 10, y = 20;
+	public void testMultipleVariableDeclaration() {
+		// Multiple declarations are allowed on a single line. Separate with commas.
+		int x, y;
 
-		// Multiple assignment can happen. Assignment operators are evaluated R
-		// to L.
+		// Multiple assignment is possible.
+		// Assignment operators are evaluated R to L.
 		// All other operators with equal precedence are evaluated L to R.
 		x = y = 200;
-
 		assertTrue(x == 200 && y == 200);
+	}
 
+	/**
+	 * Precedence is L to R. Use parentheses to force your desired order.
+	 *
+	 * As a general rule, wrap ambiguous expressions with parentheses to remove all ambiguity.
+	 */
+	@Test
+	public void testPrescedence() {
+		// L to R evaluation. Since * and / have equal precedence, you need the inner
+		// parentheses around 200 / 3.
 		int remainder = 200 - (3 * (200 / 3));
 		assertEquals(remainder, 200 % 3);
-
-		// Logical compliment operator works on booleans only (safer than C).
-		boolean t = !!true;
-		assertTrue(t);
 	}
 
 	/**
@@ -57,8 +51,7 @@ public class LanguageTests {
 	public void testIncrementOperators() {
 
 		int i = 10;
-		// Prefix : the operand (10) is returned prior to
-		// being incremented.
+		// Prefix : the operand (10) is returned prior to being incremented.
 		assertEquals(10, i++);
 		assertEquals(11, i);
 
@@ -130,78 +123,42 @@ public class LanguageTests {
 		// determine if an instance is an instance of a sublcass.
 		// Here, we are given an interface (Serializable). We can determine
 		// if the object is a particular subclass of Serializable, String.
-		java.io.Serializable ser = (java.io.Serializable) s;
+		java.io.Serializable ser = s;
 		assertTrue(ser instanceof String);
 
 		// keep in mind that "null" is not an instance of anything
 		assertFalse(null instanceof Object);
 	}
 
-	/*
-	 * Enums in java are more like classes - they can expose methods.
-	 */
-	@Test
-	public void testEnums() {
-
-		// Enums can have methods.
-		assertTrue(DaysOfTheWeek.SATURDAY.isWeekend());
-		// Enums extend from java.lang.Enum and therefore
-		// inherit all the properties from that structure.
-		for (DaysOfTheWeek d : DaysOfTheWeek.values()) {
-
-			// Creating an enum value from a string.
-			DaysOfTheWeek d2 = DaysOfTheWeek.valueOf(d.name());
-			assertTrue(d == d2);
-			assertEquals(d, d2);
-		}
-	}
-
-	@Test
-	public void testSwitch() {
-		/**
-		 * Java 1.7 allows you to switch on {@code String} values.
-		 * 
-		 * {@code break} is necessary because java will fall through.
-		 */
-
-		String s = "damon";
-		// You need to always, manually check for null prior to using
-		// a string in the switch statement to prevent a NullPointerException.
-		Preconditions.checkNotNull(s);
-
-		switch (s.toLowerCase()) {
-		case "damon":
-			break;
-		case "other":
-			fail();
-		default:
-			fail();
-		}
-
-		// Switch works with primitive types, enum types, String, and a few
-		// classes that wrap primitive types (Character, Byte, Short, Integer)
-		byte x = 0x3;
-		switch (x) {
-		case 3:
-			break;
-		default:
-			fail();
-		}
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testNullSwitch() {
-		String s = null;
-		switch (s) {
-		default:
-			fail();
-		}
-	}
-
 	@Test
 	public void testVarArgs() {
 		String[] expected = new String[] { "damon", "allison" };
-		assertArrayEquals(expected, Language.echoVarArgs("damon", "allison"));
+		assertArrayEquals(expected, OperatorTests.echoVarArgs("damon", "allison"));
 	}
+
+
+	/**
+	 * This function can be called with an array or a sequence of strings.
+	 * Within the method body, the argument is treated as an array.
+	 *
+	 * This declaration is identical to:
+	 * {@code public static String[] echoVarArgs(String[] s)}
+	 *
+	 * @param s An array of strings to print.
+	 * @return A copy of s.
+	 */
+	public static String[] echoVarArgs(String... s) {
+		Preconditions.checkNotNull(s);
+		Preconditions.checkArgument(s.getClass().isArray()); // s is an array -
+
+		String[] ret = new String[s.length];
+		// Typically we'd use copy, but we are showing "s" being
+		// used as an array.
+		for (int i = 0; i < s.length; i++) {
+			ret[i] = s[i];
+		}
+		return ret;
+	}
+
 
 }

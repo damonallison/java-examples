@@ -1,6 +1,7 @@
 package com.damonallison.utils;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import com.google.common.base.Predicate;
 
@@ -24,11 +25,7 @@ public class CoolList<T extends Number> extends ArrayList<T> {
 			return null;
 		}
 		CoolList<T> ret = new CoolList<T>(this.size());
-		for (T elt : this) {
-			if (pred.apply(elt)) {
-				ret.add(elt);
-			}
-		}
+		ret.addAll(this.stream().filter(elt -> pred.apply(elt)).collect(Collectors.toList()));
 		return ret;
 	}
 }
