@@ -35,13 +35,28 @@ Written by Josh Block, responsible for Java API development at Sun.
   wherever necessary.
 
 
-# Links #
+# Links / Reading History #
 
 I read thru the following sources / tutorials when creating this code:
 
-* [The Java Tutorials](https://docs.oracle.com/javase/tutorial/index.html) : The Java Tutorials is a quick, high level introduction to Java written by Sun (Oracle).
+* [The Java Tutorials](https://docs.oracle.com/javase/tutorial/index.html) The Java Tutorials is a quick, high level
+ introduction to Java written by Sun (Oracle). I read through "Trails Covering the Basics".
 
-I read thru "Trails Covering the Basics". 
+## Trail : Learning the Java Language ##
+
+* Covariant return type : The return type is allowed to vary in the same direction as the subclass.
+
+```
+    /**
+     *  Assume the following type hierarchy : Number -> ImaginaryNumber -> Object.
+     *
+     *  Covariant return type says that the return type can be ImaginaryNumber or
+     * a sublcass of ImaginaryNumber (i.e., Number)
+     */
+    public ImaginaryNumber genNextNumber(int i) {
+        return new Number(++i);
+    }
+```
 
 
 
