@@ -9,7 +9,11 @@ package com.damonallison.classes;
  * prior to the first usage of a class (static initializer blocks) or an
  * instance of the class (instance initializer blocks)
  * <li>
- * Inner classes
+ * Nested classes (static and inner classes).
+ *
+ * IMPORTANT : Serialization of inner and nested classes is *strongly* discouraged.
+ * Inner classes are compiled into "synthetic constructs" that differ between JVM
+ * implementations. If you serialize an inner class, it may not be compatible with another JVM implementation.
  * <li>
  * Builder pattern
  * <li>
@@ -38,9 +42,10 @@ public class Bike implements IBike {
 	// These are set before the static initializer block (for static
 	// variables) or constructor (for instance variables).
 	public static final boolean CLASS_CREATED = initializeClassVariable();
-	public static final boolean STATIC_CONSTRUCTOR_INVOKED;
+	public static final boolean STATIC_INITIALIZER_INVOKED;
 
-	private final boolean INSTANCE_CREATED = initializeInstanceVariable();
+	public final boolean INSTANCE_CREATED = initializeInstanceVariable();
+	public final boolean INITIALIZER_INVOKED;
 
 	private static boolean initializeClassVariable() {
 		return true;
@@ -50,8 +55,11 @@ public class Bike implements IBike {
 		return true;
 	}
 
-	public static boolean staticConstrucoreInvoked() {
-		return STATIC_CONSTRUCTOR_INVOKED;
+	public static boolean staticInitializerInvoked() {
+		return STATIC_INITIALIZER_INVOKED;
+	}
+	public boolean initializerInvoked() {
+		return INITIALIZER_INVOKED;
 	}
 
 	/**
@@ -62,7 +70,7 @@ public class Bike implements IBike {
 	 * order they appear in the source code.
 	 */
 	static {
-		STATIC_CONSTRUCTOR_INVOKED = true;
+		STATIC_INITIALIZER_INVOKED = true;
 	}
 
 	static {
@@ -82,14 +90,15 @@ public class Bike implements IBike {
 	 * constructors invoke it.
 	 */
 	{
-		System.out.println("initializer 1");
+//		System.out.println("initializer 1");
 		speed = 0;
 		gear = 0;
 		wheelCount = 0;
+		INITIALIZER_INVOKED = true;
 	}
 
 	{
-		System.out.println("initializer 2");
+//		System.out.println("initializer 2");
 	}
 
 	protected Bike(int speed, int gear, int wheelCount) {
@@ -135,7 +144,6 @@ public class Bike implements IBike {
 	 * For example, to access Bike's members, we use Bike.this.* You could
 	 * access the variable as "speed", but it's clearer to the reader what scope
 	 * the variable is in if you use Bike.this.*
-	 *
 	 */
 	public class Mechanic {
 		public String name;
@@ -162,7 +170,7 @@ public class Bike implements IBike {
 
 	/**
 	 * Method overload does *not* consider return type when overloading methods.
-	 * Therefore, you cannot delcare two methods with the same signature varying
+	 * Therefore, you cannot decl two methods with the same signature varying
 	 * only in return type.
 	 * 
 	 * Overloaded methods should be used sparingly, they can make the code much
@@ -181,9 +189,12 @@ public class Bike implements IBike {
 	/**
 	 * BikeBuilder is declared as a nested static class.
 	 * 
-	 * Why nested? Because it's a helper class for {@code Bike}.
-	 * 
+	 * Why nested? Because it's a helper class for {@code Bike}
 	 * Why static? So we do not need an instance of {@code Bike} to use it.
+	 *
+	 * A static nested class behaves as any other top level class. The only
+	 * difference is that it is nested within another class for packaging
+	 * purposes.
 	 */
 	public static class BikeBuilder {
 		protected int speed;

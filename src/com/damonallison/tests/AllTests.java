@@ -13,26 +13,6 @@ import static org.junit.Assert.assertTrue;
 
 public class AllTests {
 
-	@Test
-	public void testInnerClass() {
-
-		BikeBuilder bb = BikeBuilder.newBuilder();
-		bb.setSpeed(10);
-		bb.setGear(1);
-		Bike b = bb.build();
-		/**
-		 * Instantiating an instance of an (non-static) inner class requires an
-		 * instance of the outer class.
-		 * 
-		 * Static inner classes are instantiated the same as a top level static
-		 * class. Being "inner" doesn't make it *any* different than a top level
-		 * static class - it's simply packaged within another class for
-		 * encapsulation purposes.
-		 */
-		Bike.Mechanic m = b.new Mechanic();
-		m.name = "Damon";
-		assertEquals("Mechanic Damon for bike with speed 10", m.toString());
-	}
 
 	/**
 	 * A helper function that will perform a filter based on a predicate. This
@@ -47,17 +27,11 @@ public class AllTests {
 	 * @param pred
 	 * @return a filtered list containing only items passing pred.
 	 */
-	public <T> ArrayList<T> filter(ArrayList<T> list, Predicate<T> pred) {
+	public <T> List<T> filter(ArrayList<T> list, Predicate<T> pred) {
 		Objects.requireNonNull(list);
 		Objects.requireNonNull(pred);
 
-		ArrayList<T> ret = new ArrayList<T>();
-		for (T item : list) {
-			if (pred.test(item)) {
-				ret.add(item);
-			}
-		}
-		return ret;
+		return list.stream().filter(pred).collect(Collectors.toList());
 	}
 
 	/**
@@ -104,7 +78,7 @@ public class AllTests {
 				return b.getGear() % 2 == 0;
 			}
 		};
-		ArrayList<Bike> f = this.filter(bikes, p);
+		List<Bike> f = this.filter(bikes, p);
 
 		/**
 		 * Filter - using a lambda expression.
@@ -115,8 +89,7 @@ public class AllTests {
 		 * Notice that single line lambda expressions can omit the "return"
 		 * keyword and {} block.
 		 */
-		ArrayList<Bike> filtered = this.filter(bikes,
-				(b) -> b.getGear() % 2 == 0);
+		List<Bike> filtered = this.filter(bikes, (b) -> b.getGear() % 2 == 0);
 		assertTrue(filtered.size() == 49); // Evens 98 -> 2
 		assertEquals(f, filtered);
 
