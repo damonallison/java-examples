@@ -11,7 +11,7 @@ I read thru the following sources / tutorials when creating this code:
 
 ## Trail : Learning the Java Language ##
 
-https://docs.oracle.com/javase/tutorial/java/javaOO/nested.html
+https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html
 
 #### Books ####
 
@@ -89,4 +89,8 @@ classifications of nested classes.
 #### Lambda Expressions ####
 
 * Lambda expressions can be used when the interface being implemented contains only one method.
+
+* Lambda expressions are simply syntactic sugar to simplify the creation of single-method anonymous classes.
+
+
 
