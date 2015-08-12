@@ -1,6 +1,11 @@
 # README #
 
-This project is a collection of java sources and tests that I wrote while attempting to learn Java. 
+This project is a collection of java sources and tests that I wrote while attempting to learn Java.
+
+## Trail : Learning the Java Language ##
+
+https://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html
+
 
 # Links / Reading History #
 
@@ -9,9 +14,6 @@ I read thru the following sources / tutorials when creating this code:
 * [The Java Tutorials](https://docs.oracle.com/javase/tutorial/index.html) The Java Tutorials is a quick, high level
  introduction to Java written by Sun (Oracle). I read through "Trails Covering the Basics".
 
-## Trail : Learning the Java Language ##
-
-https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html
 
 #### Books ####
 
@@ -37,6 +39,11 @@ Written by Josh Block, responsible for Java API development at Sun.
 
 * Serialization.
 
+* Streams and Functional Programming : flatMap()
+* Streams using I/O (file) as a data source.
+
+
+
 ###### Tools ######
 * Jar files : how to create them, what they can contain, their relation to the class path, etc.
 * Javadoc : examples of the syntax, relationship to HTML.
@@ -48,7 +55,7 @@ Written by Josh Block, responsible for Java API development at Sun.
 
 #### Questions ####
 * Hotspot : what optimizations does the HotSpot JVM provide?
-* Performance : how does Java perform in real world usage when compared to compiled languages like C, Swift, or Go? 
+* Performance : how does Java perform in real world usage when compared to compiled languages like C, Swift, or Go?
 * Are all the packaging tools (Java Web Start, Java Plug-In) and UI tools (Swing, JavaFX, and Java2D) obsolete?
   Why would I **ever** want to write a UI in java? All java should be server side or backend, cross platform code
   wherever necessary.
@@ -70,8 +77,8 @@ Written by Josh Block, responsible for Java API development at Sun.
 ```
 
 #### Nested Classes ####
-* Nested class : the term used to described a class that is defined within another class. There are many
-classifications of nested classes.
+* Nested class : the term used to described a class that is defined within another class. There are many classifications of nested classes.
+
     * Inner class : Non-static nested class. Has access to the parent's state.
     * Static nested class : Static nested class.  Does *not* have access to the parent's state. Think of a static
     nested class as a normal class that is nested within another class for packaging purposes only.
@@ -92,5 +99,8 @@ classifications of nested classes.
 
 * Lambda expressions are simply syntactic sugar to simplify the creation of single-method anonymous classes.
 
+#### Streams ####
 
-
+* Streams have sources, intermediate operations, and terminators.
+* Intermediate operations query the stream. The stream **should not** be modified while a stream is being queried.
+* Parameters or objects used in an intermediate opration should be immutable. They should not change during the execution of the stream pipeline.
