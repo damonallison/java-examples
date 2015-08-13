@@ -1,6 +1,6 @@
 # README #
 
-This project is a collection of java sources and tests that I wrote while attempting to learn Java.
+This project is a collection of java sources and tests that I wrote while researching Java.
 
 ## Trail : Learning the Java Language ##
 
