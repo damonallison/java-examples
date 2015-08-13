@@ -4,15 +4,15 @@ This project is a collection of java sources and tests that I wrote while resear
 
 ## Trail : Learning the Java Language ##
 
-https://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html
-
+https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html
 
 # Links / Reading History #
 
 I read thru the following sources / tutorials when creating this code:
 
-* [The Java Tutorials](https://docs.oracle.com/javase/tutorial/index.html) The Java Tutorials is a quick, high level
- introduction to Java written by Sun (Oracle). I read through "Trails Covering the Basics".
+* [The Java Tutorials](https://docs.oracle.com/javase/tutorial/index.html)
+
+The Java Tutorials is a quick, high level introduction to Java written by Sun (Oracle). I read through "Trails Covering the Basics".
 
 
 #### Books ####
@@ -41,7 +41,7 @@ Written by Josh Block, responsible for Java API development at Sun.
 
 * Streams and Functional Programming : flatMap()
 * Streams using I/O (file) as a data source.
-
+* Streams : what are spliterators?
 
 
 ###### Tools ######
