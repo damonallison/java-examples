@@ -26,7 +26,6 @@ Written by Josh Block, responsible for Java API development at Sun.
 
 #### Todo ####
 
-
 ###### Language ######
 
 * Inline Annotations (Java 8) - @NonNull - do they have any runtime effect or are they for compile / static code/tool analysis only?
@@ -38,6 +37,7 @@ Written by Josh Block, responsible for Java API development at Sun.
 	* Write an example of an enum singleton.
 
 * Serialization.
+* Reflection.
 
 * Streams and Functional Programming : flatMap()
 * Streams using I/O (file) as a data source.
@@ -48,6 +48,9 @@ Written by Josh Block, responsible for Java API development at Sun.
 * Jar files : how to create them, what they can contain, their relation to the class path, etc.
 * Javadoc : examples of the syntax, relationship to HTML.
 * Analytics tools : cyclomatic complexity, unit test code coverage, LOC, etc.
+* Log4J.
+* junit
+
 
 ###### Libraries ######
 * Iterator : implement a custom iterator.
@@ -99,8 +102,46 @@ Written by Josh Block, responsible for Java API development at Sun.
 
 * Lambda expressions are simply syntactic sugar to simplify the creation of single-method anonymous classes.
 
+#### Generics ####
+
+Generic method example. Notice the type declaration comes before the return
+type.
+
+```
+
+public static <T extends Comparable<T>> int countGreaterThan(T[] array, T elem) {
+	int count = 0;
+	for (T e : array) {
+		if (e.compareTo(elem) > 0) {
+			++count;
+		}
+	}
+	return count;
+}
+
+```
+
 #### Streams ####
 
 * Streams have sources, intermediate operations, and terminators.
 * Intermediate operations query the stream. The stream **should not** be modified while a stream is being queried.
 * Parameters or objects used in an intermediate opration should be immutable. They should not change during the execution of the stream pipeline.
+
+
+## Eclipse
+
+* Theme : Preferences -> General -> Appearance
+
+* Assertions (per project):
+  Run -> Run Configurations -> Arguments Tab ->
+  VM Arguments -> Add -enableassertions
+
+* Global Assertions:
+  Preferences -> Java / Installed JREs -> JRE -> Default VM Arguments -> Edit" -> Add -enableassertions
+
+* Auto-format on save:
+  Preferences -> Java -> Editor -> Save Actions ->
+  Perform the selected actions on save -> Format source code
+
+* Custom shortcut keys (emacs keys):
+  Preferences -> General -> Keys

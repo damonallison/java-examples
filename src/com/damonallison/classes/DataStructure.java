@@ -2,6 +2,14 @@ package com.damonallison.classes;
 
 import java.util.function.Function;
 
+import com.damonallison.tests.language.NestedClassExercises;
+
+/**
+ * DataStructure is a sample class that was created by Oracle and used as the basis for
+ * lesson exercises.
+ *
+ * @see NestedClassExercises
+ */
 public class DataStructure {
 
 	// Create an array
@@ -28,6 +36,7 @@ public class DataStructure {
 		}
 		System.out.println();
 	}
+
 	public static boolean isEvenIndex(int x) {
 		return x % 2 == 0;
 	}
