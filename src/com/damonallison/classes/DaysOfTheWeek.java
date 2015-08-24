@@ -1,12 +1,15 @@
-package com.damonallison.utils;
+package com.damonallison.classes;
 
 /**
- * Java enums can have methods and constructors.
- * 
+ * Java enums are more robust than C or other languages.
+ * Java enums can:
+ * <ul>
+ * <li>Hold state.
+ * <li>Declare methods.
+ * </ul>
+ *
  * All java enums inherit from java.lang.Enum. An enum cannot extend anything
  * else.
- * 
- * @author Damon Allison
  *
  */
 public enum DaysOfTheWeek {
@@ -27,7 +30,7 @@ public enum DaysOfTheWeek {
 	 *
 	 * Enum constructors are always private.
 	 */
-	DaysOfTheWeek(String slangName) {
+	private DaysOfTheWeek(String slangName) {
 		this.slangName = slangName;
 	}
 

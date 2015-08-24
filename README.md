@@ -4,7 +4,8 @@ This project is a collection of java sources and tests that I wrote while resear
 
 ## Trail : Learning the Java Language ##
 
-https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html
+Start here : Interfaces and Inheritance
+https://docs.oracle.com/javase/tutorial/java/IandI/index.html
 
 # Links / Reading History #
 
