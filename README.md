@@ -4,8 +4,8 @@ This project is a collection of java sources and tests that I wrote while resear
 
 ## Trail : Learning the Java Language ##
 
-Start here : Interfaces and Inheritance
-https://docs.oracle.com/javase/tutorial/java/IandI/index.html
+Start here : Interfaces and Inheritance (Exercises)
+https://docs.oracle.com/javase/tutorial/java/IandI/QandE/interfaces-questions.html
 
 # Links / Reading History #
 
@@ -26,6 +26,8 @@ Written by Josh Block, responsible for Java API development at Sun.
 
 
 #### Todo ####
+
+* Are their any java books written by the compiler and/or runtime teams at Google?
 
 ###### Language ######
 

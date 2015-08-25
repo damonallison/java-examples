@@ -2,10 +2,37 @@ package com.damonallison.classes;
 
 /**
  * Interfaces can be public or package accessible. Package is the default.
- * 
- * @author Damon Allison
+ *
+ * Interfaces can contain:
+ * <ul>
+ * <li>Constants
+ * <li>Method signatures
+ * <li>Default methods
+ * <li>Static methods
+ * <li>Nested types
+ *
+ * All methods on an interface are implicitly public, so you can omit the modifier.
+ * All constants on an interface are implicitly public, so you can omit the modifiers.
  */
-public interface IBike {
+public interface IBike extends Comparable<IBike> {
+
+	/**
+	 * Interfaces can contain nested types. If you really want to.
+	 *
+	 * Nested types do *not* have access to the parent type. It's a
+	 * "static nested class". You can consider it a typical class
+	 * that just happens to be nested within this interface for
+	 * encapsulation purposes only.
+	 */
+	class Pedal {
+		private int length = 0;
+		public void setLength(int length) {
+			this.length = length;
+		}
+		public int getLength() {
+			return length;
+		}
+	}
 
 	/**
 	 * Enums can be added to interfaces. If you really want to.
@@ -19,18 +46,18 @@ public interface IBike {
 	/**
 	 * Interfaces can contain static methods. If you really want to.
 	 */
-	static int add(int x, int y) {
-		return x + y;
+	static int pelotonSpeed(IBike bike1, IBike bike2) {
+		return (bike1.getSpeed() + bike2.getSpeed()) / 2;
 	}
 
 	/**
 	 * Interfaces can contain static constants.
-	 * 
+	 *
 	 * Interface constants are implicitly public, static, and final. These
 	 * modifiers don't need to be specified. They are specified here to be
 	 * explicit.
 	 */
-	int DEFAULT_WHEELS = 2;
+	public static final int DEFAULT_WHEELS = 2;
 
 	int getSpeed();
 
@@ -40,12 +67,16 @@ public interface IBike {
 
 	/**
 	 * Interfaces can contain default methods.
-	 * 
+	 *
 	 * default methods allow you to add members to an existing interface without
 	 * breaking compatibility with clients who depend on the old interface.
-	 * 
+	 *
 	 * Nice hack - default methods allow you to add functional interfaces on top
 	 * of existing interfaces without having to extend them.
+	 *
+	 * Another way to add methods to an interface would be to create a new interface
+	 * which extends this interface. This is not as clean as simply adding a default
+	 * method since it adds yet another type to the type system.
 	 */
 	default boolean isInHighGear() {
 		return getGear() > 10;

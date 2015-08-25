@@ -62,7 +62,7 @@ public class LambdaTests {
 
 		// create data
 		List<Bike> bikes = new ArrayList<>(100);
-		for (int i = 1; i < 101; i++) {
+		for (int i = 1; i < 101; i++) { // gears need to be >= 1
 			bikes.add(BikeBuilder.newBuilder().setGear(i).setSpeed(i).setWheelCount(2).build());
 		}
 
