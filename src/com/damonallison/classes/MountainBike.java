@@ -10,7 +10,9 @@ public class MountainBike extends Bike {
 		validateState();
 	}
 
-	private void validateState() throws IllegalArgumentException {
+	@Override
+	protected void validateState() throws IllegalArgumentException {
+		super.validateState();
 		if (maxElevation < 0) {
 			throw new IllegalArgumentException("maxElevation must be >= 0");
 		}
@@ -36,6 +38,7 @@ public class MountainBike extends Bike {
 			return this;
 		}
 
+		@Override
 		public MountainBike build() {
 			return new MountainBike(this.speed, //
 					this.gear, //

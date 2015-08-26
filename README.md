@@ -4,8 +4,8 @@ This project is a collection of java sources and tests that I wrote while resear
 
 ## Trail : Learning the Java Language ##
 
-Start here : Interfaces and Inheritance (Exercises)
-https://docs.oracle.com/javase/tutorial/java/IandI/QandE/interfaces-questions.html
+Start here :
+https://docs.oracle.com/javase/tutorial/java/IandI/super.html
 
 # Links / Reading History #
 

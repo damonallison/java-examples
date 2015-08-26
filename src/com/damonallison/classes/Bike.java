@@ -28,8 +28,7 @@ package com.damonallison.classes;
  * </code>
  * <li>
  * Finalizers
- *
- * @author Damon Allison
+ * </ul>
  */
 public class Bike implements IBike {
 
@@ -112,7 +111,7 @@ public class Bike implements IBike {
 		validateState();
 	}
 
-	private void validateState() throws IllegalArgumentException {
+	protected void validateState() throws IllegalArgumentException {
 		// Is there no way in java to have an unsigned int?
 		if (speed < 0) {
 			throw new IllegalArgumentException("speed must be >= 0");

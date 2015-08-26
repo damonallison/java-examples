@@ -31,7 +31,6 @@ public class EnumTests {
 	/**
 	 * Attempting to parse an invalid value will throw an {@link IllegalArgumentException}
 	 */
-	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidName() {
 		DaysOfTheWeek.valueOf("not valid");
 	}

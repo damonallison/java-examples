@@ -16,15 +16,17 @@ import com.damonallison.classes.Bike;
 import com.damonallison.classes.Bike.BikeBuilder;
 
 /**
- * Lambda expressions (lambdas) allow you to express instances of single-method classes
- * more compactly.
+ * Lambda expressions (lambdas) allow you to express instances of single-method
+ * classes more compactly.
  *
  * Anonymous classes simplify the syntax for class creation by allowing you to
- * define an unnamed class inline. For classes with a single method, this syntax is still
- * very verbose. Lambdas allow you to write a single-method anonymous class more concisely.
+ * define an unnamed class inline. For classes with a single method, this syntax
+ * is still very verbose. Lambdas allow you to write a single-method anonymous
+ * class more concisely.
  *
- * Any interface that is a {@link FunctionalInterface} can be represented as a lambda expression.
- * A {@link FunctionalInterface} contains exactly one abstract function, such as {@link Predicate}.
+ * Any interface that is a {@link FunctionalInterface} can be represented as a
+ * lambda expression. A {@link FunctionalInterface} contains exactly one
+ * abstract function, such as {@link Predicate}.
  *
  * @author Damon Allison
  */
@@ -33,8 +35,8 @@ public class LambdaTests {
 	/**
 	 * Lambda expressions are simply syntactic shortcuts for implementing an
 	 * interface with a single abstract method. Rather than creating an
-	 * anonymous class and overriding the single method,
-	 * lambda expressions allow you to simplify the syntax.
+	 * anonymous class and overriding the single method, lambda expressions
+	 * allow you to simplify the syntax.
 	 */
 	@Test
 	public void lambdaExpressionAssignment() {
@@ -63,7 +65,8 @@ public class LambdaTests {
 		// create data
 		List<Bike> bikes = new ArrayList<>(100);
 		for (int i = 1; i < 101; i++) { // gears need to be >= 1
-			bikes.add(BikeBuilder.newBuilder().setGear(i).setSpeed(i).setWheelCount(2).build());
+			bikes.add(BikeBuilder.newBuilder().setGear(i).setSpeed(i)
+					.setWheelCount(2).build());
 		}
 
 		//
@@ -71,7 +74,8 @@ public class LambdaTests {
 		//
 		// Without lambdas, we must use an anonymous class (or a named class)
 		// to create an instance of a predicate, implementing the interface's
-		// only method. Here, we create an anonymous class instance of Predicate<Bike>.
+		// only method. Here, we create an anonymous class instance of
+		// Predicate<Bike>.
 		//
 		// Note that Predicate is a functional interface.
 		//
@@ -96,11 +100,17 @@ public class LambdaTests {
 		// using lambda syntax. It is equivalent to "bikePred" above.
 		//
 		// Note that in the filter method, the parameter "b" is enclosed
-		// by parens. Lambda expressions that require multiple parameters must be enclosed
-		// in parens. In this case, with only one param, we could have omitted the parens.
+		// by parens. Lambda expressions that require multiple parameters must
+		// be enclosed
+		// in parens. In this case, with only one param, we could have omitted
+		// the parens.
 		//
-		List<Bike> fastBikes2 = bikes.stream()
-				.filter((b) -> b.getSpeed() > 50) // lambda expression equivalent to bikePred above
+		List<Bike> fastBikes2 = bikes.stream().filter((b) -> b.getSpeed() > 50) // lambda
+				// expression
+				// equivalent
+				// to
+				// bikePred
+				// above
 				.collect(Collectors.toList());
 
 		assertEquals(fastBikes, fastBikes2);
@@ -108,9 +118,11 @@ public class LambdaTests {
 		//
 		// for-each (side-effects) - simplifies iteration
 		//
-		// Notice here we omitted the parens. This is legal with a single parameter only.
+		// Notice here we omitted the parens. This is legal with a single
+		// parameter only.
 		// Also notice that the lambda implementation is defined in a block. Any
-		// multi-line lambda must be defined in a block (and include a {@code return} if
+		// multi-line lambda must be defined in a block (and include a {@code
+		// return} if
 		// appropriate).
 		//
 		fastBikes.forEach(b -> {
@@ -121,10 +133,12 @@ public class LambdaTests {
 		// map
 		//
 		List<String> speedStrings = new ArrayList<>(fastBikes.size());
-		fastBikes
-		.parallelStream() // parallelStream will execute on a tread pool (fork/join pool)
+		fastBikes.parallelStream()
+		// parallelStream will execute on a tread pool (fork/join pool)
 		.map(b -> b.getSpeed())
-		.forEach(speed -> speedStrings.add("You're fast " + speed.toString()));
+		.forEach(
+				speed -> speedStrings.add("You're fast "
+						+ speed.toString()));
 
 		assertTrue(speedStrings.size() == fastBikes.size());
 	}
@@ -138,7 +152,6 @@ public class LambdaTests {
 			return Integer.compare(a.getSpeed(), b.getSpeed());
 		}
 	}
-
 
 	private ArrayList<Bike> generateBikeListSortedDescending() {
 		final ArrayList<Bike> bikes = new ArrayList<Bike>();
@@ -202,8 +215,8 @@ public class LambdaTests {
 	}
 
 	/**
-	 * Lambda expressions are a natural fit for use with java streams. Lambda expressions
-	 * are used for various stream pipeline stages.
+	 * Lambda expressions are a natural fit for use with java streams. Lambda
+	 * expressions are used for various stream pipeline stages.
 	 */
 	@Test
 	public void testStreams() {
@@ -216,29 +229,26 @@ public class LambdaTests {
 		 * docs. Aggregate (stream) operations are pipeline based - think
 		 * reactive programming.
 		 */
-		List<Bike> filtered2 = bikes
-				.parallelStream()
-				.filter(b -> {
-					/**
-					 * Because we are on a parallel stream, this filtering will
-					 * be done concurrently.
-					 *
-					 * Note : this function was manually split into two lines to
-					 * show that anonymous functions can be implemented with a
-					 * block rather than as a single line.
-					 */
-					int gear = b.getGear();
-					return gear % 2 == 0;
-				})
-				.sorted((b, b2) -> Integer.compare(b.getGear(), b2.getGear()))
-				.collect(Collectors.toList());
+		List<Bike> filtered2 = bikes.parallelStream().filter(b -> {
+			/**
+			 * Because we are on a parallel stream, this filtering will be done
+			 * concurrently.
+			 *
+			 * Note : this function was manually split into two lines to show
+			 * that anonymous functions can be implemented with a block rather
+			 * than as a single line.
+			 */
+			int gear = b.getGear();
+			return gear % 2 == 0;
+		}).sorted((b, b2) -> Integer.compare(b.getGear(), b2.getGear()))
+		.collect(Collectors.toList());
 
 		assertTrue(filtered2.size() == 49);
-		assertTrue("Should be sorted by gear, ascending", filtered2.get(0).getGear() == 2);
+		assertTrue("Should be sorted by gear, ascending", filtered2.get(0)
+				.getGear() == 2);
 
 		// Map
-		int[] gearMap = bikes.stream()
-				.mapToInt(bike -> bike.getGear())
+		int[] gearMap = bikes.stream().mapToInt(bike -> bike.getGear())
 				.toArray();
 
 		assertTrue(gearMap[0] == 99);
