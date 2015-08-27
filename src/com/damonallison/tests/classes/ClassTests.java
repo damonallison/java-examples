@@ -252,4 +252,9 @@ public class ClassTests
 		assertEquals(bike.getSpeed(), asMountainBike.getSpeed());
 		assertEquals(asBike.getSpeed(), asMountainBike.getSpeed());
 	}
+
+	@Test
+	public void testMethodOverriding() {
+		IBike bike = MountainBikeBuilder.newBuilder().setMaxElevation(100).setGear(11).setSpeed(10).setWheelCount(2).build();
+	}
 }

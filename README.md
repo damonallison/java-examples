@@ -1,11 +1,12 @@
 # README #
 
-This project is a collection of java sources and tests that I wrote while researching Java.
+This project is a collection of examples and tests I wrote while researching Java.
 
 ## Trail : Learning the Java Language ##
 
 Start here :
-https://docs.oracle.com/javase/tutorial/java/IandI/super.html
+https://docs.oracle.com/javase/tutorial/java/data/characters.html
+
 
 # Links / Reading History #
 
@@ -28,6 +29,8 @@ Written by Josh Block, responsible for Java API development at Sun.
 #### Todo ####
 
 * Are their any java books written by the compiler and/or runtime teams at Google?
+* Why is implementing a correct version of "compareTo" impossible with java inheritance?
+
 
 ###### Language ######
 

@@ -28,13 +28,19 @@ package com.damonallison.classes;
  * </code>
  * <li>
  * Finalizers
+ * <li>
+ * Overriding {@link Object} members.
+ *
+ * Important note : methods called from constructors should be marked as {code final}. If they are not,
+ * a derived class can override the method creating unpredictable results. In this example, {@link MountainBike}
+ * subclasses {@link Bike}. Bike's constructor calls {@code validateState}. If validateState was not private and
+ * was overridden, {@link MountainBike} could provide an implementation that would allow us to create invalid
+ * Bike objects. Therefore, {@code validateState} is private.
  * </ul>
  */
-public class Bike implements IBike {
-
+public class Bike extends AbstractBike implements IBike, Cloneable {
 
 	private int speed;
-	private int gear;
 	private int wheelCount;
 
 	// Variables can be initialized to the results of a method call.
@@ -91,7 +97,6 @@ public class Bike implements IBike {
 	{
 		//		System.out.println("initializer 1");
 		speed = 0;
-		gear = 0;
 		wheelCount = 0;
 		INITIALIZER_INVOKED = true;
 	}
@@ -101,32 +106,25 @@ public class Bike implements IBike {
 	}
 
 	protected Bike(int speed, int gear, int wheelCount) {
-
+		super(gear);
 		assert (CLASS_CREATED);
 		assert (INSTANCE_CREATED);
 		this.speed = speed;
-		this.gear = gear;
 		this.wheelCount = wheelCount;
-
 		validateState();
 	}
 
-	protected void validateState() throws IllegalArgumentException {
+	private void validateState() throws IllegalArgumentException {
 		// Is there no way in java to have an unsigned int?
-		if (speed < 0) {
+		if (this.getSpeed() < 0) {
 			throw new IllegalArgumentException("speed must be >= 0");
 		}
-		if (gear < 1) {
+		if (this.getGear() < 1) {
 			throw new IllegalArgumentException("gear must be >= 1");
 		}
-		if (wheelCount < 0) {
+		if (this.getWheelCount() < 0) {
 			throw new IllegalArgumentException("wheelCount must be >= 0");
 		}
-	}
-
-	@Override
-	protected void finalize() {
-		System.out.println("finalize");
 	}
 
 	/**
@@ -162,11 +160,6 @@ public class Bike implements IBike {
 	}
 
 	@Override
-	public int getGear() {
-		return this.gear;
-	}
-
-	@Override
 	public int getWheelCount() {
 		return this.wheelCount;
 	}
@@ -199,9 +192,11 @@ public class Bike implements IBike {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + gear;
-		result = prime * result + speed;
-		result = prime * result + wheelCount;
+		result = prime * result + (INITIALIZER_INVOKED ? 1231 : 1237);
+		result = prime * result + (INSTANCE_CREATED ? 1231 : 1237);
+		result = prime * result + this.getGear();
+		result = prime * result + this.getSpeed();
+		result = prime * result + this.getWheelCount();
 		return result;
 	}
 
@@ -224,17 +219,44 @@ public class Bike implements IBike {
 			return false;
 		}
 		Bike other = (Bike) obj;
-		if (gear != other.gear) {
+		if (this.getGear() != other.getGear()) {
 			return false;
 		}
-		if (speed != other.speed) {
+		if (this.getSpeed() != other.getSpeed()) {
 			return false;
 		}
-		if (wheelCount != other.wheelCount) {
+		if (this.getWheelCount() != other.getWheelCount()) {
 			return false;
 		}
 		return true;
 	}
+
+	/**
+	 * Creates a deep copy of this object.
+	 */
+	@Override
+	public Object clone() {
+		return BikeBuilder.newBuilder()
+				.setGear(this.getGear())
+				.setSpeed(this.getSpeed())
+				.setWheelCount(this.getWheelCount())
+				.build();
+	}
+
+	@Override public String toString() {
+		return "Bike speed=" + this.getSpeed() + " gear=" + this.getGear() + " wheelCount=" + this.getWheelCount();
+	}
+
+	/**
+	 * Finalize *may* be called by the JVM. If or when it is called is uncertain.
+	 * Because of this uncertainty, you should *not* rely on this method to free
+	 * resources.
+	 */
+	@Override
+	protected void finalize() {
+		System.out.println("finalize");
+	}
+
 
 	/**
 	 * WARNING : when a class extends a concrete {@link Comparable} class and
