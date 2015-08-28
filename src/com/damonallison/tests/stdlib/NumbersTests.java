@@ -17,7 +17,7 @@ import org.junit.Test;
  * * For using convenience functions supplied by the object ({@code MIN_VALUE || MAX_VALUE}).
  * * For using class methods like value conversion to/from strings.
  */
-public class Numbers {
+public class NumbersTests {
 
 	/**
 	 * Shows converting numbers to / from different types
@@ -32,6 +32,14 @@ public class Numbers {
 
 		assertEquals(iobj.longValue(), lobj.longValue()); // unboxes
 		assertTrue(Integer.compare(i, Long.valueOf(l).intValue()) == 0);
+
+		// Convert to a string (2 ways)
+		String s = Integer.toString(i);
+		s = String.valueOf(i);
+
+		// Convert from a string
+		i = Integer.parseInt(s); // preferred - no garbage wrapper class.
+		i = Integer.valueOf(s);  // will create a garbage wrapper class.
 	}
 
 	@Test
@@ -65,8 +73,11 @@ public class Numbers {
 	@Test
 	public void testMath() {
 		assertEquals(10, Math.round(10.49));
+
+		// .5 will always round up
 		assertEquals(11, Math.round(10.5));
 		assertEquals(12, Math.round(11.5));
+		assertEquals(0, Math.round(-0.5));
 
 		double d = 44.5;
 		assertEquals(Double.valueOf(45), Double.valueOf(Math.ceil(d))); // returns the smallest decimal *larger* than d.
@@ -85,7 +96,5 @@ public class Numbers {
 		// use Random or SecureRandom.
 		Random r = new Random();
 		assert(r.nextInt(10) < 10);
-
-
 	}
 }

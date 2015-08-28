@@ -1,11 +1,12 @@
 # README #
 
-This project is a collection of examples and tests I wrote while researching Java.
+This project is a collection of examples and tests I wrote while researching
+Java.
 
 ## Trail : Learning the Java Language ##
 
 Start here :
-https://docs.oracle.com/javase/tutorial/java/data/characters.html
+https://docs.oracle.com/javase/tutorial/java/generics/index.html
 
 
 # Links / Reading History #
@@ -30,6 +31,12 @@ Written by Josh Block, responsible for Java API development at Sun.
 
 * Are their any java books written by the compiler and/or runtime teams at Google?
 * Why is implementing a correct version of "compareTo" impossible with java inheritance?
+* String interpolation - is printf the best we can do? Is there a better
+  replacement for Code42's log formatter token replacer?
+
+* Is it more common to use primitives for performance or objects for ubitquity?
+
+
 
 
 ###### Language ######
@@ -51,6 +58,7 @@ Written by Josh Block, responsible for Java API development at Sun.
 
 
 ###### Tools ######
+
 * Jar files : how to create them, what they can contain, their relation to the class path, etc.
 * Javadoc : examples of the syntax, relationship to HTML.
 * Analytics tools : cyclomatic complexity, unit test code coverage, LOC, etc.
@@ -59,6 +67,8 @@ Written by Josh Block, responsible for Java API development at Sun.
 
 
 ###### Libraries ######
+
+* Apache commons.
 * Iterator : implement a custom iterator.
 * Guava : anything by Google.
 
