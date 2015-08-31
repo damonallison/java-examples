@@ -6,8 +6,7 @@ Java.
 ## Trail : Learning the Java Language ##
 
 Start here :
-https://docs.oracle.com/javase/tutorial/java/generics/index.html
-
+https://docs.oracle.com/javase/tutorial/java/generics/wildcards.html
 
 # Links / Reading History #
 

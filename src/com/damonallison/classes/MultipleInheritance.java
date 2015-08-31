@@ -4,8 +4,8 @@ package com.damonallison.classes;
  * This class inherits two interfaces, both with the same default method.
  *
  * Which default method will be used? Neither - you get a compile error.
- *
- * You
+ * If you implement multiple interfaces with the same default method, you must
+ * override the method to guarantee the compiler knows which method to invoke.
  */
 public class MultipleInheritance implements Interface1, Interface2 {
 
