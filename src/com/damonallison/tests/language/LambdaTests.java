@@ -132,14 +132,11 @@ public class LambdaTests {
 		//
 		// map
 		//
-		List<String> speedStrings = new ArrayList<>(fastBikes.size());
-		fastBikes.parallelStream()
+		List<String> speedStrings = new ArrayList<>();
 		// parallelStream will execute on a tread pool (fork/join pool)
-		.map(b -> b.getSpeed())
-		.forEach(
-				speed -> speedStrings.add("You're fast "
-						+ speed.toString()));
-
+		fastBikes.stream().map(b -> b.getSpeed()).forEach(speed -> {
+			speedStrings.add("You're fast " + speed.toString());
+		});
 		assertTrue(speedStrings.size() == fastBikes.size());
 	}
 

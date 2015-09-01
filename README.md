@@ -6,7 +6,7 @@ Java.
 ## Trail : Learning the Java Language ##
 
 Start here :
-https://docs.oracle.com/javase/tutorial/java/generics/wildcards.html
+https://docs.oracle.com/javase/tutorial/java/generics/QandE/generics-questions.html
 
 # Links / Reading History #
 
@@ -18,6 +18,9 @@ The Java Tutorials is a quick, high level introduction to Java written by Sun (O
 
 
 #### Books ####
+
+[The Java Programming Language](http://www.amazon.com/The-Java-Programming-Language-Edition/dp/0321349806)
+Arnold, Gosling (original java authors)
 
 [Java Concurrency in Practice](http://www.amazon.com/Java-Concurrency-Practice-Brian-Goetz/dp/0321349601)
 Written by Doug Lea. Doug oversaw the concurrency team at Sun.

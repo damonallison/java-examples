@@ -5,8 +5,8 @@ import java.util.function.Function;
 import com.damonallison.tests.language.NestedClassExercises;
 
 /**
- * DataStructure is a sample class that was created by Oracle and used as the basis for
- * lesson exercises.
+ * DataStructure is a sample class that was created by Oracle and used as the
+ * basis for lesson exercises.
  *
  * @see NestedClassExercises
  */
@@ -27,14 +27,16 @@ public class DataStructure {
 		return arrayOfInts;
 	}
 
-	public void printEven() {
+	public String printEven() {
 
 		// Print out values of even indices of the array
 		DataStructureIterator iterator = new EvenIterator();
+		StringBuilder sb = new StringBuilder();
 		while (iterator.hasNext()) {
-			System.out.print(iterator.next() + " ");
+			sb.append(iterator.next() + " ");
 		}
-		System.out.println();
+		sb.append(System.lineSeparator());
+		return sb.toString();
 	}
 
 	public static boolean isEvenIndex(int x) {
@@ -45,7 +47,8 @@ public class DataStructure {
 		return !isEvenIndex(x);
 	}
 
-	public interface DataStructureIterator extends java.util.Iterator<Integer> { }
+	public interface DataStructureIterator extends java.util.Iterator<Integer> {
+	}
 
 	// Inner class implements the DataStructureIterator interface,
 	// which extends the Iterator<Integer> interface
@@ -74,27 +77,36 @@ public class DataStructure {
 		}
 	}
 
-	// Define a method named print(DataStructureIterator iterator). Invoke this method
-	// with an instance of the class EvenIterator so that it performs the same function
+	// Define a method named print(DataStructureIterator iterator). Invoke this
+	// method
+	// with an instance of the class EvenIterator so that it performs the same
+	// function
 	// as {@code printEven}
-	public void print(DataStructureIterator iterator) {
+	public String print(DataStructureIterator iterator) {
+		StringBuilder sb = new StringBuilder();
 		while (iterator.hasNext()) {
-			System.out.print(iterator.next() + " ");
+			sb.append(iterator.next() + " ");
 		}
-		System.out.println();
+		sb.append(System.lineSeparator());
+		return sb.toString();
 	}
 
-	// Define a method named print(java.util.Function<Integer, Boolean> iterator) that performs
+	// Define a method named print(java.util.Function<Integer, Boolean>
+	// iterator) that performs
 	// the same function as print(DataStructureIterator iterator).
-	// Invoke this method with a lambda expression to print elements that have an even index value.
-	// Invoke this method again with a lambda expression to print elements that have an odd index value.
+	// Invoke this method with a lambda expression to print elements that have
+	// an even index value.
+	// Invoke this method again with a lambda expression to print elements that
+	// have an odd index value.
 
-	public void print(Function<Integer, Boolean> iterator) {
+	public String print(Function<Integer, Boolean> iterator) {
+		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < SIZE; i++) {
 			if (iterator.apply(i)) {
-				System.out.print(i + " ");
+				sb.append(Integer.valueOf(i).toString() + " ");
 			}
 		}
-		System.out.println();
+		sb.append(System.lineSeparator());
+		return sb.toString();
 	}
 }

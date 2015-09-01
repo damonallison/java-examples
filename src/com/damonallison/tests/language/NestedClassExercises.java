@@ -5,10 +5,10 @@ import org.junit.Test;
 import com.damonallison.classes.DataStructure;
 import com.damonallison.classes.DataStructure.DataStructureIterator;
 
-
 /**
  * Nested Classes Exercises from :
- * https://docs.oracle.com/javase/tutorial/java/javaOO/QandE/nested-questions.html
+ * https://docs.oracle.com/javase/tutorial/java/javaOO
+ * /QandE/nested-questions.html
  *
  */
 public class NestedClassExercises {
@@ -24,9 +24,8 @@ public class NestedClassExercises {
 			ic = new InnerClass1();
 		}
 
-		public void displayStrings() {
-			System.out.println(ic.getString() + ".");
-			System.out.println(ic.getAnotherString() + ".");
+		public String displayStrings() {
+			return ic.getString() + "," + ic.getAnotherString();
 		}
 
 		/**
@@ -48,9 +47,10 @@ public class NestedClassExercises {
 	 *
 	 * Define a method named print(DataStructureIterator) that takes an
 	 * EventIterator and does the same thing that printEven does.
-
-	 * The trick with this example is that EvenIterator is nested within DataStructure.
-	 * You create an EvenIterator instance from an instance of DataStructure.
+	 * 
+	 * The trick with this example is that EvenIterator is nested within
+	 * DataStructure. You create an EvenIterator instance from an instance of
+	 * DataStructure.
 	 */
 	@Test
 	public void exercise2a() {
@@ -60,9 +60,8 @@ public class NestedClassExercises {
 	}
 
 	/**
-	 * Exercise 2b :
-	 * Invoke print() to print odd values. Use an anonymous class as the method's
-	 * argument.
+	 * Exercise 2b : Invoke print() to print odd values. Use an anonymous class
+	 * as the method's argument.
 	 */
 	@Test
 	public void exercise2b() {
@@ -95,22 +94,24 @@ public class NestedClassExercises {
 	/**
 	 * Exercise 2c
 	 *
-	 * Define a method named print(java.util.Function<Integer, Boolean> iterator) that that performs
-	 * the same function as print(DataStructureIterator iterator).
+	 * Define a method named print(java.util.Function<Integer, Boolean>
+	 * iterator) that that performs the same function as
+	 * print(DataStructureIterator iterator).
 	 *
-	 * Invoke this method with a lambda expression to print elements that have an even index value.
-	 * Invoke this method again with a lambda expression to print elements that have an odd index value.
+	 * Invoke this method with a lambda expression to print elements that have
+	 * an even index value. Invoke this method again with a lambda expression to
+	 * print elements that have an odd index value.
 	 */
 	@Test
 	public void exercise2c() {
 		DataStructure ds = new DataStructure();
 		ds.print(position -> position % 2 == 0);
-		ds.print(position-> position % 2 == 1);
+		ds.print(position -> position % 2 == 1);
 	}
 
 	/**
-	 * Define two methods so that the following two statements print elements that have an even index value
-	 * and elements that have an odd index value:
+	 * Define two methods so that the following two statements print elements
+	 * that have an even index value and elements that have an odd index value:
 	 *
 	 * <code>
 	 * DataStructure ds = new DataStructure()
