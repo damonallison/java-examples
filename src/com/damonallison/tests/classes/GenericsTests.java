@@ -1,16 +1,21 @@
 package com.damonallison.tests.classes;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
 
 import com.damonallison.classes.Pair;
 import com.damonallison.classes.SuperPair;
+import com.google.common.collect.Lists;
 
 /**
  * Examples of defining and using generic type parameters.
@@ -24,7 +29,7 @@ import com.damonallison.classes.SuperPair;
  *
  * * Replaces generic type parameters with their bounds or "Object" for
  * unbounded types. The resulting bytecode contains only ordinary classes,
- * interfaces, and methods. Generics are *not* incuded in the resulting
+ * interfaces, and methods. Generics are *not* included in the resulting
  * bytecode!
  *
  * * Inserts type casts as necessary to preserve type safety.
@@ -186,6 +191,7 @@ public class GenericsTests {
 	 *
 	 * List<?> List<Object> List<Integer>
 	 */
+	@Test
 	public void testWildcards() {
 
 		// Wildcards allow any type.
@@ -204,8 +210,94 @@ public class GenericsTests {
 
 		List<? extends Integer> intList = new ArrayList<>();
 		List<? extends Number> numList = intList; // Allowed since <? extends
-		// Number> is a supertype of
-		// <? extends Integer>
+		assertEquals(numList, intList);
+
+		/*-
+		 * List<Number> is not a supertype of List<Integer>, therefore
+		 * the following assignment will fail.
+		 */
+
+		// List<Integer> intList2 = new ArrayList<>();
+		// List<Number> numList2 = intList2;
+	}
+
+	/*-
+	 * Generics exercises:
+	 * https://docs.oracle.com/javase/tutorial/java/generics/
+	 * QandE/generics-questions.html
+	 *
+	 * Write a generic method to count the number of elements in a collection
+	 * that have a specific property (for example, odd integers, prime numbers,
+	 * palindromes).
+	 *
+	 * Answer :
+	 * We declare a generic type T to be a generic type. We accept a collection of that
+	 * type, with a Predicate to test each element in the collection, returning a count
+	 * of all elements within the collection that pass the predicate.
+	 */
+	private static <T> Long filter(Collection<T> elements, Predicate<T> pred) {
+		return elements.stream().filter(pred).count();
+	}
+
+	@Test
+	public void testGenericsExercises1() {
+		List<Integer> nums = Lists.newArrayList(new Integer(1), new Integer(2));
+		assertEquals(Long.valueOf(1),
+				GenericsTests.filter(nums, num -> num % 2 == 0));
+	}
+
+	/*-
+	 * Exercise 3:
+	 *
+	 * Write a generic method to exchange the positions of two different elements in an array.
+	 */
+	private static <T> void exchange(T[] arr, int pos1, int pos2) {
+		T temp = arr[pos2];
+		arr[pos2] = arr[pos1];
+		arr[pos1] = temp;
+	}
+
+	@Test
+	public void testGenericsExercises3() {
+
+		Integer[] ints = { 1, 2, 3 };
+		GenericsTests.exchange(ints, 0, 2);
+		assertArrayEquals(new Integer[] { 3, 2, 1 }, ints);
 
 	}
+
+	/*-
+	 * Exercise 4:
+	 *
+	 * If the compiler erases all type parameters at compile time, why use generics?
+	 *
+	 * * Allows you to have type non-object type information in methods that declare
+	 *   type parameters with lower or upper bounds.
+	 *
+	 * * The compiler will insert type casts as necessary, freeing you from doing it (safer).
+	 */
+
+	/*-
+	 * Exercise 8 :
+	 *
+	 * Write a generic method to find the maximal element in the range [begin, end) of a list.
+	 *
+	 * * The return value is an "out" parameter. Out parameters are defined with a lower bound.
+	 * * The input parameter lst is an "in" parameter. In parameters are defined with a type parameter having an upper bound.
+	 *   The upper bound allows us to use methods on upper bound type (Comparable in this case).
+	 *
+	 *
+	 */
+	private static <T extends Comparable<? super T>> T findMax(
+			List<? extends T> lst, int begin, int end) {
+		return lst.subList(begin, end).stream().sorted()
+				.collect(Collectors.toList()).get(end - begin - 1);
+	}
+
+	@Test
+	public void testGenericsExercises8() {
+		assertEquals(Integer.valueOf(3),
+				GenericsTests.findMax(Lists.newArrayList(4, 2, 3, 1), 1, 4));
+	}
+
 }

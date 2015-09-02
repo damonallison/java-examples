@@ -6,7 +6,7 @@ Java.
 ## Trail : Learning the Java Language ##
 
 Start here :
-https://docs.oracle.com/javase/tutorial/java/generics/QandE/generics-questions.html
+https://docs.oracle.com/javase/tutorial/java/package/usepkgs.html
 
 # Links / Reading History #
 
