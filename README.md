@@ -14,8 +14,29 @@ I read thru the following sources / tutorials when creating this code:
 
 * [The Java Tutorials](https://docs.oracle.com/javase/tutorial/index.html)
 
-The Java Tutorials is a quick, high level introduction to Java written by Sun (Oracle). I read through "Trails Covering the Basics".
+The Java Tutorials is a quick, high level introduction to Java written by Sun (Oracle). The tutorials are called "trails".
 
+## Trails Read ##
+
+### [Trail : Getting Started](https://docs.oracle.com/javase/tutorial/getStarted/index.html) ###
+
+Very simple intro into running your first application.
+
+### [Trail : Learning the Java Programming Language](https://docs.oracle.com/javase/tutorial/java/TOC.html) ###
+
+This tutorial covered the basics of all aspects of the language, including:
+  * Introduction to OOP.
+  * Java the language : types, control flow, classes, generics, interfaces.
+  * Usage of numbers / strings.
+
+### [Trail : Essential Java Classes(https://docs.oracle.com/javase/tutorial/essential/index.html) ###
+
+This tutorial covered the basics of the most frequently used java classes.
+  * Exceptions
+  * I/O
+  * Concurrency
+  * The Platform Environment : the java infrastructure.
+  * Regular Expressions
 
 #### Books ####
 
