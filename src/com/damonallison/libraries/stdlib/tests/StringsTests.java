@@ -1,4 +1,4 @@
-package com.damonallison.tests.stdlib;
+package com.damonallison.libraries.stdlib.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

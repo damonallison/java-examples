@@ -1,4 +1,4 @@
-package com.damonallison.tests.exceptions;
+package com.damonallison.exceptions.tests;
 
 import static org.junit.Assert.assertEquals;
 

@@ -1,4 +1,4 @@
-package com.damonallison.tests.language;
+package com.damonallison.language.tests;
 
 import com.google.common.base.Preconditions;
 import org.junit.Test;

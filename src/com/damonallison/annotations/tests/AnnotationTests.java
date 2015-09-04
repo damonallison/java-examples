@@ -1,4 +1,4 @@
-package com.damonallison.tests;
+package com.damonallison.annotations.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
