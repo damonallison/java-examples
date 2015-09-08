@@ -6,7 +6,7 @@ Java.
 ## Trail : Learning the Java Language ##
 
 Start here :
-https://docs.oracle.com/javase/tutorial/essential/io/fileio.html
+https://docs.oracle.com/javase/tutorial/essential/io/pathOps.html
 
 # Links / Reading History #
 
@@ -52,14 +52,17 @@ Written by Josh Block, responsible for Java API development at Sun.
 
 #### Todo ####
 
+* Java Serialization : what is written during serialization? Is there a
+  specification for the java serialization format?
+
 * Are their any java books written by the compiler and/or runtime teams at Google?
 * Why is implementing a correct version of "compareTo" impossible with java inheritance?
 * String interpolation - is printf the best we can do? Is there a better
   replacement for Code42's log formatter token replacer?
 
 * Is it more common to use primitives for performance or objects for ubitquity?
-
-
+* Advanced I/O : netty or pipeline based I/O. How does Netty's pipeline compare to concatenating streams into a pipeline?
+* How does try-with-resources work behind the scenes? Does the compiler insert `.Close` into a generated `finally` block?
 
 
 ###### Language ######

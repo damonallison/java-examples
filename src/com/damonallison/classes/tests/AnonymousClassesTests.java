@@ -12,7 +12,7 @@ public class AnonymousClassesTests {
 	 * Anonymous classes are typically used when only one or two methods need to
 	 * be overridden. If multiple methods need to be overridden, an actual new,
 	 * named type is preferred.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -28,13 +28,16 @@ public class AnonymousClassesTests {
 		 * Callable is a generic interface that exposes a single method, "call".
 		 * Callable is pretty flexible - it's probably used all over java.
 		 *
-		 * Anonymous classes have the following syntax. They are used like constructors.
-		 * The anonymous class will implement the declared interface or override the declared
-		 * class. If you are implementing an interface, a no-arg constructor is used. If you are implementing a
-		 * class, you must use a constructor overload for the class you are overriding.
+		 * Anonymous classes have the following syntax. They are used like
+		 * constructors. The anonymous class will implement the declared
+		 * interface or override the declared class. If you are implementing an
+		 * interface, a no-arg constructor is used. If you are implementing a
+		 * class, you must use a constructor overload for the class you are
+		 * overriding.
 		 */
 		Callable<Boolean> callable = new Callable<Boolean>() {
 
+			// Note there is no way for us to expose "name" here.
 			private String name = "damon";
 
 			/**
@@ -51,13 +54,11 @@ public class AnonymousClassesTests {
 			@Override
 			public Boolean call() {
 				myNewFunction();
-				System.out.println("running " + name);
+				name = "executed " + name;
 				return x > 1;
 			}
 		};
 		assertTrue(callable.call());
 	}
-
-
 
 }
