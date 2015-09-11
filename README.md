@@ -29,7 +29,7 @@ This tutorial covered the basics of all aspects of the language, including:
   * Java the language : types, control flow, classes, generics, interfaces.
   * Usage of numbers / strings.
 
-### [Trail : Essential Java Classes(https://docs.oracle.com/javase/tutorial/essential/index.html) ###
+### [Trail : Essential Java Classes](https://docs.oracle.com/javase/tutorial/essential/index.html) ###
 
 This tutorial covered the basics of the most frequently used java classes.
   * Exceptions
@@ -51,6 +51,8 @@ Written by Josh Block, responsible for Java API development at Sun.
 
 
 #### Todo ####
+
+* Concurrency
 
 * Java Serialization : what is written during serialization? Is there a
   specification for the java serialization format?

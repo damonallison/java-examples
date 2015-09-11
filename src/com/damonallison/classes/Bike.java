@@ -11,9 +11,10 @@ package com.damonallison.classes;
  * <li>
  * Nested classes (static and inner classes).
  *
- * IMPORTANT : Serialization of inner and nested classes is *strongly* discouraged.
- * Inner classes are compiled into "synthetic constructs" that differ between JVM
- * implementations. If you serialize an inner class, it may not be compatible with another JVM implementation.
+ * IMPORTANT : Serialization of inner and nested classes is *strongly*
+ * discouraged. Inner classes are compiled into "synthetic constructs" that
+ * differ between JVM implementations. If you serialize an inner class, it may
+ * not be compatible with another JVM implementation.
  * <li>
  * Builder pattern
  * <li>
@@ -31,11 +32,13 @@ package com.damonallison.classes;
  * <li>
  * Overriding {@link Object} members.
  *
- * Important note : methods called from constructors should be marked as {code final}. If they are not,
- * a derived class can override the method creating unpredictable results. In this example, {@link MountainBike}
- * subclasses {@link Bike}. Bike's constructor calls {@code validateState}. If validateState was not private and
- * was overridden, {@link MountainBike} could provide an implementation that would allow us to create invalid
- * Bike objects. Therefore, {@code validateState} is private.
+ * Important note : methods called from constructors should be marked as
+ * {@code final}. If they are not, a derived class can override the method
+ * creating unpredictable results. In this example, {@link MountainBike}
+ * subclasses {@link Bike}. Bike's constructor calls {@code validateState}. If
+ * validateState was not private and was overridden, {@link MountainBike} could
+ * provide an implementation that would allow us to create invalid Bike objects.
+ * Therefore, {@code validateState} is private.
  * </ul>
  */
 public class Bike extends AbstractBike implements IBike, Cloneable {
@@ -63,6 +66,7 @@ public class Bike extends AbstractBike implements IBike, Cloneable {
 	public static boolean staticInitializerInvoked() {
 		return STATIC_INITIALIZER_INVOKED;
 	}
+
 	public boolean initializerInvoked() {
 		return INITIALIZER_INVOKED;
 	}
@@ -95,14 +99,14 @@ public class Bike extends AbstractBike implements IBike, Cloneable {
 	 * constructors invoke it.
 	 */
 	{
-		//		System.out.println("initializer 1");
+		// System.out.println("initializer 1");
 		speed = 0;
 		wheelCount = 0;
 		INITIALIZER_INVOKED = true;
 	}
 
 	{
-		//		System.out.println("initializer 2");
+		// System.out.println("initializer 2");
 	}
 
 	protected Bike(int speed, int gear, int wheelCount) {
@@ -177,7 +181,8 @@ public class Bike extends AbstractBike implements IBike, Cloneable {
 	 * Overloaded methods should be used sparingly, they can make the code much
 	 * less readable.
 	 *
-	 * @param amount The amount to change the speed.
+	 * @param amount
+	 *            The amount to change the speed.
 	 */
 	public void deltaSpeed(long amount) {
 		speed += amount;
@@ -186,7 +191,6 @@ public class Bike extends AbstractBike implements IBike, Cloneable {
 	public void deltaSpeed(int amount) {
 		speed += amount;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -199,7 +203,6 @@ public class Bike extends AbstractBike implements IBike, Cloneable {
 		result = prime * result + this.getWheelCount();
 		return result;
 	}
-
 
 	/**
 	 * WARNING : when a class extends a concrete class that implements equals
@@ -236,39 +239,38 @@ public class Bike extends AbstractBike implements IBike, Cloneable {
 	 */
 	@Override
 	public Object clone() {
-		return BikeBuilder.newBuilder()
-				.setGear(this.getGear())
-				.setSpeed(this.getSpeed())
-				.setWheelCount(this.getWheelCount())
+		return BikeBuilder.newBuilder().setGear(this.getGear())
+				.setSpeed(this.getSpeed()).setWheelCount(this.getWheelCount())
 				.build();
 	}
 
-	@Override public String toString() {
-		return "Bike speed=" + this.getSpeed() + " gear=" + this.getGear() + " wheelCount=" + this.getWheelCount();
+	@Override
+	public String toString() {
+		return "Bike speed=" + this.getSpeed() + " gear=" + this.getGear()
+				+ " wheelCount=" + this.getWheelCount();
 	}
 
 	/**
-	 * Finalize *may* be called by the JVM. If or when it is called is uncertain.
-	 * Because of this uncertainty, you should *not* rely on this method to free
-	 * resources.
+	 * Finalize *may* be called by the JVM. If or when it is called is
+	 * uncertain. Because of this uncertainty, you should *not* rely on this
+	 * method to free resources.
 	 */
 	@Override
 	protected void finalize() {
 		System.out.println("finalize");
 	}
 
-
 	/**
 	 * WARNING : when a class extends a concrete {@link Comparable} class and
 	 * adds a significant field, a correct implementation of {@code compareTo}
-	 * cannot be constructed. The only alternative is to use composition
-	 * rather than inheritance.
+	 * cannot be constructed. The only alternative is to use composition rather
+	 * than inheritance.
 	 *
 	 * This implementation compares based on speed only. A true implementation
 	 * would compare based on all fields.
 	 *
-	 * @return int indicating if this object is less than, equal to,
-	 *         or greater than the object being compared to.
+	 * @return int indicating if this object is less than, equal to, or greater
+	 *         than the object being compared to.
 	 */
 	@Override
 	public int compareTo(IBike obj) {
@@ -288,8 +290,8 @@ public class Bike extends AbstractBike implements IBike, Cloneable {
 	/**
 	 * BikeBuilder is declared as a nested static class.
 	 *
-	 * Why nested? Because it's a helper class for {@code Bike}
-	 * Why static? So we do not need an instance of {@code Bike} to use it.
+	 * Why nested? Because it's a helper class for {@code Bike} Why static? So
+	 * we do not need an instance of {@code Bike} to use it.
 	 *
 	 * A static nested class behaves as any other top level class. The only
 	 * difference is that it is nested within another class for packaging

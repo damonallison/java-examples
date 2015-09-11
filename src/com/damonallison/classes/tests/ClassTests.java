@@ -21,7 +21,7 @@ import com.damonallison.classes.MultipleInheritance;
 public class ClassTests {
 
 	/**
-	 * The initialization order for members of a class:
+	 * Tests the initialization order for members of a class:
 	 *
 	 * <ol>
 	 * <li>Static variables are initialized. They can be initialized to the
@@ -75,11 +75,6 @@ public class ClassTests {
 	/**
 	 * Instantiating an instance of an (non-static) inner class requires an
 	 * instance of the outer class.
-	 *
-	 * Static inner classes are instantiated the same as a top level static
-	 * class. Being "inner" doesn't make it *any* different than a top level
-	 * static class - it's simply packaged within another class for
-	 * encapsulation purposes.
 	 */
 	@Test
 	public void testInnerClass() {
@@ -106,7 +101,7 @@ public class ClassTests {
 		// This class does not override the default {@code IBike.isInHighGear}
 		// method.
 		// Therefore, the interface default method is used.
-		class MyBike implements IBike {
+		final class MyBike implements IBike {
 
 			private int speed, gear, wheelCount;
 
