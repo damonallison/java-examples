@@ -1,169 +1,33 @@
 package com.damonallison.libraries.io.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.file.DirectoryNotEmptyException;
-import java.nio.file.FileStore;
-import java.nio.file.FileSystem;
+import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystemException;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.UserDefinedFileAttributeView;
+import java.util.List;
 
 import org.junit.Test;
 
-/**
- * Java 7 Introduced the NIO.2 package. These tests show the basic usage of
- * NIO.2.
- *
- * TODO : Symlinks (w/ circular references)
- *
- */
-public class NIO2Tests {
+import com.google.common.collect.Lists;
 
-	/**
-	 * {@code Path} is the primary entry point into the NIO.2 package.
-	 *
-	 * {@code Path} objects are operated on syntactially, they don't access the
-	 * file system.
-	 */
-	@Test
-	public void testPathCreation() {
-
-		Path full = Paths.get("/test/path");
-		Path parts = Paths.get("/", "test", "path");
-		Path uri = Paths.get(URI.create("file:///test/path"));
-
-		assertEquals(full, parts);
-		assertEquals(parts, uri);
-	}
-
-	@Test
-	public void testPathParsing() {
-		String pathStr = "/this/is/a/path.tmp";
-		Path p = Paths.get(pathStr);
-
-		assertEquals(pathStr, p.toString());
-		assertTrue(p.isAbsolute());
-		assertEquals("getFileName() returns the last path component.",
-				"path.tmp", p.getFileName().toString());
-
-		// Java uses the term "name" to refer to each path component.
-		assertEquals("each path component is a 'name'", 4, p.getNameCount());
-		assertEquals(
-				"getName() will return the component at the given position. Note that 0 is *not* the root '/'",
-				"this", p.getName(0).toString());
-
-		// The root path will be different based on OS. We can't always assume
-		// "/" - it may be "C:/"
-		assertEquals("/", p.getRoot().toString());
-
-		// Parent
-		assertEquals("/this/is/a", p.getParent().toString());
-	}
-
-	@Test
-	public void testPathComparison() throws IOException {
-		Path parent = Paths.get("/this/is/a");
-		Path child = parent.resolve("test.txt");
-		Path free = Paths.get("test.txt");
-
-		assertEquals("/this/is/a/test.txt", child.toString());
-		assertTrue("determining parent / child relationship using startsWith",
-				child.startsWith(parent));
-		assertTrue("determining if two paths have the same leafs",
-				child.endsWith(free));
-
-		// determine if two paths resolve to the same file (resolves symlinks).
-		// If the paths are identical, no file system operation is performed.
-		// if they are not identical, the file system is queried, symlinks
-		// resolved,
-		// and a flag is returned if both paths point to the same inode.
-		assertTrue(Files.isSameFile(parent, Paths.get("/this/is/a/")));
-	}
-
-	/**
-	 * Path normalization removes any redundant elements.
-	 *
-	 * Important : {@code normalize} does *not* check the file system when it
-	 * cleans up a path. Normalizing a path where one or more name components
-	 * refer to a symbolic link could make the path invalid.
-	 */
-	@Test
-	public void testPathNormalization() {
-
-		// Final path should be /test/file
-		Path p = Paths.get("/test/./child/../file");
-
-		assertEquals(5, p.getNameCount());
-		assertEquals(".", p.getName(1).toString());
-
-		assertEquals("/test/file", p.normalize().toString());
-
-		// Normalize does *not* look at the file system when normalizing paths.
-		// It is strictly a syntactic operation.
-		p = Paths.get("~/test").normalize();
-		assertEquals(p.toString(), "~/test");
-	}
-
-	/**
-	 * Tests converting a path to/from a string and URI.
-	 */
-	@Test
-	public void testPathConversion() {
-		Path p = Paths.get("/this/is/a/test.txt"); // from string
-		assertEquals(p.toString(), "/this/is/a/test.txt"); // to string
-
-		URI u = p.toUri(); // to uri
-		assertEquals(u.getScheme(), "file");
-
-		Path p2 = Paths.get(u); // from uri
-		assertEquals(p, p2);
-	}
-
-	@Test
-	public void testJoiningPaths() {
-		Path p = Paths.get("/this/is/a");
-
-		// Resolving a partial path will append it.
-		assertEquals("/this/is/a/test.txt", p.resolve(Paths.get("test.txt"))
-				.toString());
-
-		// Resolving an absolute path will return the absolute path.
-		// It's already resolved.
-		assertEquals("/a/test.txt", p.resolve(Paths.get("/a/test.txt"))
-				.toString());
-
-		// Relativize : creates a relative path from an original path. The
-		// nested path must be
-		// absolute.
-		Path nested = p.relativize(Paths.get("/this/is/a/nested/path.txt"));
-		assertEquals("nested/path.txt", nested.toString());
-
-		// What happens if we try to relativize two paths that do not share a
-		// parent? Relativize will still create a relative path!
-		nested = p.relativize(Paths.get("/no/common/parent"));
-		assertEquals("../../../no/common/parent", nested.toString());
-
-		// Relativize only works when either both paths are absolute or both
-		// relative.
-	}
-
-	// -------------------------------------------------------------------------
-	// Files tests
-	// -------------------------------------------------------------------------
+public class NIO2FileTests {
 
 	/**
 	 * Tests symbolic link creation and other operations.
@@ -213,7 +77,9 @@ public class NIO2Tests {
 
 		assertTrue(Files.isSameFile(symlink, textFile));
 
-		// Convert the symlink to a real path.
+		// .toRealPath() returns an absolute, case correct, and symlinked
+		// resolved path.
+		//
 		// Note : we need to convert *both* to their real paths - the /tmp
 		// directory is also symlinked in OS X.
 		assertEquals(textFile.toRealPath(), symlink.toRealPath());
@@ -306,14 +172,14 @@ public class NIO2Tests {
 	 */
 	@Test
 	public void testFileStore() throws IOException {
-		FileSystem fs = FileSystems.getDefault();
-		for (FileStore store : fs.getFileStores()) {
-			long total = store.getTotalSpace();
-			long used = store.getTotalSpace() - store.getUnallocatedSpace();
-			long avail = store.getUsableSpace();
-			System.out.println("looking at " + store + ": total=" + total
-					+ " used=" + used + " avail=" + avail);
-		}
+		// FileSystem fs = FileSystems.getDefault();
+		// for (FileStore store : fs.getFileStores()) {
+		// long total = store.getTotalSpace();
+		// long used = store.getTotalSpace() - store.getUnallocatedSpace();
+		// long avail = store.getUsableSpace();
+		// System.out.println("looking at " + store + ": total=" + total
+		// + " used=" + used + " avail=" + avail);
+		// }
 	}
 
 	/**
@@ -325,6 +191,7 @@ public class NIO2Tests {
 	 * @throws IOException
 	 *
 	 */
+	@Test
 	public void testFileOperations() throws IOException {
 
 		// Create
@@ -349,10 +216,12 @@ public class NIO2Tests {
 		tempDir = Files.createTempDirectory("tmp");
 		final Path textPath = tempDir.resolve("test.txt");
 		final Path copyPath = tempDir.resolve("test2.txt");
-		Files.write(textPath, "Hello, world".getBytes(Charset.forName("UTF-8")));
+		Files.write(textPath, "Hello, world".getBytes());
 		Files.copy(textPath, copyPath, StandardCopyOption.REPLACE_EXISTING);
 
-		assertEquals(Files.readAllBytes(textPath), Files.readAllBytes(copyPath));
+		String textString = new String(Files.readAllBytes(textPath));
+		String copyString = new String(Files.readAllBytes(copyPath));
+		assertEquals(textString, copyString);
 
 		// Move
 
@@ -360,5 +229,106 @@ public class NIO2Tests {
 		Files.move(copyPath, movePath, StandardCopyOption.REPLACE_EXISTING);
 		assertTrue(Files.notExists(copyPath));
 		assertTrue(Files.exists(movePath));
+	}
+
+	@Test
+	public void testFileReading() throws IOException {
+
+		// Simple read/write operations on Files.
+
+		// The easiest method for reading / writing bytes
+		// is with the static "readAll*" methods on Files.
+		Path tempPath = Files.createTempFile("file", "tmp");
+		Files.write(tempPath, "hello, world!".getBytes());
+		String input = new String(Files.readAllBytes(tempPath));
+		assertEquals("hello, world!", input);
+
+		// Buffered / Unbuffered Streams
+
+		// Buffered readers are the next least complex reading/writing option.
+		// Buffered readers save on I/O operations.
+		// These are defined in the java.io package, therefore they are NIO and
+		// IO
+		// compatible.
+		Path copyPath = Files.createTempFile("copy", "tmp");
+		try (BufferedReader reader = Files.newBufferedReader(tempPath);
+				BufferedWriter writer = Files.newBufferedWriter(copyPath)) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				writer.write(line);
+			}
+		}
+
+		String textString = new String(Files.readAllBytes(tempPath));
+		String copyString = new String(Files.readAllBytes(copyPath));
+		assertEquals(textString, copyString);
+
+		// Channels
+
+		// Streams reads and writes a character at a time. Channel I/O reads
+		// buffers at a time.
+
+		String encoding = System.getProperty("file.encoding");
+		try (SeekableByteChannel sbc = Files.newByteChannel(tempPath)) {
+			ByteBuffer buf = ByteBuffer.allocate(2);
+			// not ideal. we should specify an ideal bounds.
+			ByteBuffer out = ByteBuffer.allocate(200);
+			int read = 0;
+			while ((read = sbc.read(buf)) > 0) {
+				out.put(buf.array(), 0, read);
+				buf.rewind();
+			}
+			copyString = new String(out.array(), 0, out.position(),
+					Charset.forName(encoding));
+			assertEquals(textString, copyString);
+		}
+	}
+
+	/**
+	 * Example of specifying a glob to find all files in a single directory
+	 * matching a pattern.
+	 */
+	@Test
+	public void testDirectoryReading() throws IOException {
+
+		// TODO : recursive tree walking requires a FileVisitor.
+		// Implement a FileVisitor which returns a list of paths (sorted)
+		// that match a glob pattern. (Find a library that does this already -
+		// there has to be one out there if the default FileVisitor doesn't
+		// support it.
+
+		Path tempDir = Files.createTempDirectory("tmp");
+		Path javaFile = tempDir.resolve("java.txt");
+		Path testFile = tempDir.resolve("test.txt");
+		Path binFile = tempDir.resolve("java.bin");
+		Path noFile = tempDir.resolve("no.file");
+		Files.createFile(javaFile);
+		Files.createFile(testFile);
+		Files.createFile(binFile);
+		Files.createFile(noFile);
+
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(tempDir,
+				"*.{txt,bin}")) {
+			List<Path> paths = Lists.newArrayList(stream);
+			assertTrue(paths.containsAll(Lists.newArrayList(javaFile, testFile,
+					binFile)));
+			assertFalse(paths.contains(noFile));
+		}
+
+		// Custom Filter
+
+		DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
+			@Override
+			public boolean accept(Path entry) throws IOException {
+				return entry.getFileName().toString().toLowerCase()
+						.contains("java");
+			}
+
+		};
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(tempDir,
+				filter)) {
+			List<Path> paths = Lists.newArrayList(stream);
+			assertTrue(paths.containsAll(Lists.newArrayList(javaFile, binFile)));
+		}
 	}
 }

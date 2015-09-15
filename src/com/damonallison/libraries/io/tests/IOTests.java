@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.io.StringWriter;
@@ -65,6 +66,12 @@ public class IOTests {
 
 	}
 
+	/**
+	 * {@link DataInputStream} provides methods to write primitive values to the
+	 * output stream.
+	 *
+	 * @throws IOException
+	 */
 	@Test
 	public void testDataCopy() throws IOException {
 		List<String> headers = new ArrayList<>();
@@ -96,6 +103,16 @@ public class IOTests {
 
 	}
 
+	/**
+	 * {@link ObjectOutputStream} provides methods to write entire objects to
+	 * the output stream (via serialization).
+	 *
+	 * In this method, notice that {@link Pair} is serializable and is being
+	 * written / read into
+	 *
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testObjectCopy() throws IOException, ClassNotFoundException {

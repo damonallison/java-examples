@@ -6,7 +6,7 @@ Java.
 ## Trail : Learning the Java Language ##
 
 Start here :
-https://docs.oracle.com/javase/tutorial/essential/io/file.html
+https://docs.oracle.com/javase/tutorial/essential/io/links.html
 
 # Links / Reading History #
 
@@ -37,6 +37,11 @@ This tutorial covered the basics of the most frequently used java classes.
   * Concurrency
   * The Platform Environment : the java infrastructure.
   * Regular Expressions
+
+The Java NIO.2 package contains underlying byte stream, channel, and buffer classes
+that will require more research to become proficient. It's sufficient to understand
+the major classes and their differences, as well as the use case for each I/O stream
+type.
 
 #### Books ####
 
