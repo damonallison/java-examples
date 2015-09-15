@@ -6,7 +6,7 @@ Java.
 ## Trail : Learning the Java Language ##
 
 Start here :
-https://docs.oracle.com/javase/tutorial/essential/io/pathOps.html
+https://docs.oracle.com/javase/tutorial/essential/io/file.html
 
 # Links / Reading History #
 
