@@ -1,21 +1,30 @@
 package com.damonallison.libraries.io.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataInputStream;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.io.StringWriter;
-import java.nio.charset.Charset;
+import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
+import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -26,44 +35,114 @@ import com.damonallison.libraries.io.IOUtilities;
 import com.google.common.collect.Lists;
 
 /**
+ * Tests which show I/O operations against files (reading / writing).
+ *
+ * Java has multiple ways to write files ranging from simple {@link Files#write} to
+ * complex (channels). These tests give examples of reading / writing data using
+ * different I/O types.
+ *
+ *
+ * @formatter:off
+ *
+ *
+ * Stream hierarchy:
+ * 	InputStream / OutputStream
+ * 		FileInputStream / FileOutputStream : bytes to/from files.
+ * 		DataInputStream / DataOutputStream : primitives to/from other streams.
+ * 		ObjectInputStream / ObjectOutputStream : object serialization/deserialization to/from other streams.
+ *
+ * Readers / writers read/write to underlying streams. They require an underlying stream to perform
+ * the I/O operations.
+ *
+ *  Reader / Writer
+ *  	BufferedReader / BufferedWriter : wrap buffered readers/writers around readers/writers which have costly
+ *                                        read/write operations (FileWriters / OutputStreamWriters).
+ *      	FileReader / FileWriter : read/write files. Read/write operations are expensive.
  *
  *
  */
 public class IOTests {
 
+	/**
+	 * Shows common operations when working with files.
+	 */
 	@Test
-	public void testFileCopy() throws IOException {
+	public void testFileOperations() throws IOException {
 
-		final String contents = "hello, world";
+		// Create
 
-		// TODO : look into Java 7's NIO package for a newer alternative.
-		File in = File.createTempFile("infile", null);
-		File outBytes = File.createTempFile("outbytes", null);
-		File outText = File.createTempFile("outchars", null);
-		File outLines = File.createTempFile("outline", null);
+		Path tempDir = Files.createTempDirectory("tmp");
 
-		try (FileWriter writer = new FileWriter(in)) {
-			writer.write(contents);
+		// Delete
+
+		// Directories must be empty or delete will fail. You can catch
+		// DirectoryNotEmptyException.
+		try {
+			Files.delete(tempDir);
+		} catch (DirectoryNotEmptyException e) {
+			fail("Directory should have been empty!");
+		} catch (IOException e) {
+			// File permissions problems are caught here
+			fail("Directory should have existed with read permissions");
 		}
+
+		// Copy
+
+		tempDir = Files.createTempDirectory("tmp");
+		final Path textPath = tempDir.resolve("test.txt");
+		final Path copyPath = tempDir.resolve("test2.txt");
+		Files.write(textPath, "Hello, world".getBytes());
+		Files.copy(textPath, copyPath, StandardCopyOption.REPLACE_EXISTING);
+
+		assertTrue(Arrays.equals( //
+				Files.readAllBytes(textPath), //
+				Files.readAllBytes(copyPath)));
+
+		// Move
+
+		final Path movePath = tempDir.resolve("moved.txt");
+		Files.move(copyPath, movePath, StandardCopyOption.REPLACE_EXISTING);
+		assertTrue(Files.notExists(copyPath));
+		assertTrue(Files.exists(movePath));
+	}
+
+	/**
+	 * There are multiple ways to copy a file, ranging from very simple and
+	 * atomic {@code Files}.
+	 */
+	@Test
+	public void fileCopy() throws IOException {
+
+		final byte[] bytes = "Damon Allison".getBytes();
+
+		Path in = Files.createTempFile("infile", null);
+		Path outBytes = Files.createTempFile("outbytes", null);
+		Path outText = Files.createTempFile("outchars", null);
+		Path outLines = Files.createTempFile("outline", null);
+
+		// Easiest read/write operations.
+		Files.write(in, bytes);
+		assertTrue(Arrays.equals(bytes, Files.readAllBytes(in)));
+
+		// The dead simple way to copy a file is:
+		Path copy = Files.createTempFile("copy", null);
+		Files.delete(copy);
+		Files.copy(new FileInputStream(in.toFile()), copy);
+		assertTrue(Arrays.equals(bytes, Files.readAllBytes(copy)));
 
 		// byte-by-byte copy
 		IOUtilities.byteCopy(in, outBytes);
-		String output = new String(Files.readAllBytes(Paths.get(outBytes
-				.getCanonicalPath())), Charset.forName("UTF-8"));
-		assertEquals(contents, output);
+		assertTrue(Arrays.equals(bytes, Files.readAllBytes(outBytes)));
 
 		// char-by-char copy
 		IOUtilities.charCopy(in, outText);
-		output = new String(Files.readAllBytes(Paths.get(outText
-				.getCanonicalPath())), Charset.forName("UTF-8"));
-		assertEquals(contents, output);
+		assertTrue(Arrays.equals(bytes, Files.readAllBytes(outText)));
 
 		// line copy
 		IOUtilities.lineCopy(in, outLines);
-		output = new String(Files.readAllBytes(Paths.get(outText
-				.getCanonicalPath())), Charset.forName("UTF-8"));
-		assertEquals(contents, output);
-
+		final byte[] line = ("Damon Allison" + System.lineSeparator())
+				.getBytes();
+		assertTrue(Arrays.equals(line, Files.readAllBytes(outLines)));
 	}
 
 	/**
@@ -73,21 +152,21 @@ public class IOTests {
 	 * @throws IOException
 	 */
 	@Test
-	public void testDataCopy() throws IOException {
+	public void dataCopy() throws IOException {
 		List<String> headers = new ArrayList<>();
 		List<Integer> values = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
 			headers.add(String.format("header %d", i));
 			values.add(Integer.valueOf(i));
 		}
-		File outData = File.createTempFile("outdata", null);
+		Path outData = Files.createTempFile("outdata", null);
 		IOUtilities.dataCopy(headers, values, outData);
 
 		List<String> inHeaders = new ArrayList<>(headers.size());
 		List<Integer> inValues = new ArrayList<>(values.size());
 
 		try (DataInputStream inputStream = new DataInputStream(
-				new FileInputStream(outData))) {
+				new FileInputStream(outData.toFile()))) {
 
 			for (int i = 0; i < 10; i++) {
 				inHeaders.add(inputStream.readUTF());
@@ -115,7 +194,7 @@ public class IOTests {
 	 */
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testObjectCopy() throws IOException, ClassNotFoundException {
+	public void objectCopy() throws IOException, ClassNotFoundException {
 		List<String> headers = new ArrayList<>();
 		List<Serializable> values = new ArrayList<>();
 
@@ -124,14 +203,15 @@ public class IOTests {
 			values.add(new Pair<String, String>(String.format("first %d", i),
 					String.format("last %d", i)));
 		}
-		File outData = File.createTempFile("outdata", null);
+		Path outData = Files.createTempFile("outdata", null);
 		IOUtilities.objectCopy(headers, values, outData);
 
 		List<String> inHeaders = new ArrayList<>(headers.size());
 		List<Pair<String, String>> inValues = new ArrayList<>(values.size());
 
+		// Read back what was just output, verify the contents.
 		try (ObjectInputStream inputStream = new ObjectInputStream(
-				new FileInputStream(outData))) {
+				Files.newInputStream(outData))) {
 
 			for (int i = 0; i < 10; i++) {
 				inHeaders.add((String) inputStream.readObject());
@@ -167,5 +247,134 @@ public class IOTests {
 			assertEquals("Hello damon", sw.toString());
 		}
 
+	}
+
+	/**
+	 * Java has multiple I/O methods - ranging from very simple to very complex.
+	 *
+	 * At the very easiest, we can read and write entire files in a single
+	 * operation.
+	 *
+	 * At the most complex, we can stream I/O via a channel, manually lock
+	 * files, and have memory-mapped I/O regions for optimal performance.
+	 */
+	@Test
+	public void fileReadingWriting() throws IOException {
+
+		// Simple read/write operations on Files.
+
+		// The easiest method for reading / writing bytes
+		// is with the static "readAll*" methods on Files.
+		Path tempPath = Files.createTempFile("file", "tmp");
+		Files.write(tempPath, "hello, world!".getBytes());
+		String input = new String(Files.readAllBytes(tempPath));
+		assertEquals("hello, world!", input);
+
+		//
+		// Buffered / Unbuffered Streams
+		//
+		// Buffered readers are the next least complex reading/writing option.
+		// Buffered readers save on I/O operations by holding local buffers and
+		// only flush them at periodic intervals or when told.
+		//
+		// These are defined in the java.io package, therefore they are NIO and
+		// IO compatible.
+		Path copyPath = Files.createTempFile("copy", "tmp");
+		try (BufferedReader reader = Files.newBufferedReader(tempPath);
+				BufferedWriter writer = Files.newBufferedWriter(copyPath)) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				writer.write(line);
+			}
+		}
+		assertTrue(Arrays.equals(Files.readAllBytes(tempPath),
+				Files.readAllBytes(copyPath)));
+
+		Files.delete(copyPath);
+
+		//
+		// Channels (introduced in 1.4 with NIO).
+		//
+		// Channel I/O reads buffers at a time.
+		// Channels (FileChannel in particular) provide low level access to the
+		// reading / writing process. For example, you can access files randomly
+		// and create memory mapped regions for faster performance.
+
+		try (SeekableByteChannel inChannel = Files.newByteChannel(tempPath,
+				StandardOpenOption.READ);
+				SeekableByteChannel outChannel = Files.newByteChannel(copyPath, //
+						StandardOpenOption.CREATE_NEW, //
+						StandardOpenOption.WRITE)) {
+
+			ByteBuffer buf = ByteBuffer.allocate(2);
+			while (inChannel.read(buf) > 0) {
+				// Does *not* copy the underlying array!
+				ByteBuffer bb = ByteBuffer.wrap(buf.array(), 0, buf.position());
+				outChannel.write(bb);
+				buf.rewind(); // prepares the buf for the next read.
+			}
+		}
+		assertTrue(Arrays.equals(Files.readAllBytes(tempPath),
+				Files.readAllBytes(copyPath)));
+	}
+
+	/*-
+	 * Example of specifying a glob to find all files in a single directory
+	 * matching a pattern.
+	 *
+	 * Globs have the following behavior
+	 *
+	 * "*"  Matches any number of characters. Does not cross directory boundaries.
+	 * "**" Matches any number of characters. Crosses directory boundaries.
+	 * "?"  Matches exactly 1 character.
+	 * "[]" Matches a single character within a given range.
+	 *      [A-Z,a-z]
+	 *      [?\*] (within brackets, these characters match themselves - do not escape.
+	 * "{test,test2}" Matches a collection of subpatterns. Wildcards can be used.
+	 *                '{foo*, *[0-9]*}
+	 */
+	@Test
+	public void testDirectoryReading() throws IOException {
+
+		// TODO : recursive tree walking requires a FileVisitor.
+		// Implement a FileVisitor which returns a list of paths (sorted)
+		// that match a glob pattern. (Find a library that does this already -
+		// there has to be one out there if the default FileVisitor doesn't
+		// support it.
+
+		Path tempDir = Files.createTempDirectory("tmp");
+		Path javaFile = tempDir.resolve("java.txt");
+		Path testFile = tempDir.resolve("test.txt");
+		Path binFile = tempDir.resolve("java.bin");
+		Path noFile = tempDir.resolve("no.file");
+		Files.createFile(javaFile);
+		Files.createFile(testFile);
+		Files.createFile(binFile);
+		Files.createFile(noFile);
+
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(tempDir,
+				"*.{txt,bin}")) {
+			List<Path> paths = Lists.newArrayList(stream);
+
+			assertTrue(paths.containsAll(Lists.newArrayList(javaFile, testFile,
+					binFile)));
+			assertFalse(paths.contains(noFile));
+		}
+
+		// Custom Filter
+
+		DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
+			@Override
+			public boolean accept(Path entry) throws IOException {
+				return entry.getFileName().toString().toLowerCase()
+						.contains("java");
+			}
+
+		};
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(tempDir,
+				filter)) {
+			List<Path> paths = Lists.newArrayList(stream);
+			assertTrue(paths.containsAll(Lists.newArrayList(javaFile, binFile)));
+		}
 	}
 }

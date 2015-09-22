@@ -2,7 +2,6 @@ package com.damonallison.libraries.io;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -11,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -23,9 +23,9 @@ public final class IOUtilities {
 	/**
 	 * Performs a low level, byte by byte copy of {@code in} to {@code out}.
 	 *
-	 * Byte streams are the lowest level of I/O. If you are dealing with a known
-	 * data format (i.e., character data), use something higher level, like a
-	 * character stream.
+	 * FileInputStreamByte streams are the lowest level of I/O. If you are
+	 * dealing with a known data format (i.e., character data), use something
+	 * higher level, like a character stream.
 	 *
 	 * Byte streams are the basis for all other streams.
 	 *
@@ -34,15 +34,19 @@ public final class IOUtilities {
 	 * @param out
 	 *            the destination file to copy to
 	 */
-	public static void byteCopy(File in, File out) throws IOException {
+	public static void byteCopy(Path in, Path out) throws IOException {
 
-		try (FileInputStream istream = new FileInputStream(in);
-				FileOutputStream ostream = new FileOutputStream(out)) {
+		Preconditions.checkNotNull(in);
+		Preconditions.checkNotNull(out);
+
+		try (FileInputStream istream = new FileInputStream(in.toFile());
+				FileOutputStream ostream = new FileOutputStream(out.toFile())) {
 
 			int c; // holds 8 bit chars. Byte based reads are 8 bits.
 			while ((c = istream.read()) != -1) {
 				ostream.write(c);
 			}
+
 		}
 	}
 
@@ -57,10 +61,10 @@ public final class IOUtilities {
 	 * @param out
 	 *            the destination text file to copy to
 	 */
-	public static void charCopy(File in, File out) throws IOException {
+	public static void charCopy(Path in, Path out) throws IOException {
 
-		try (FileReader reader = new FileReader(in);
-				FileWriter writer = new FileWriter(out)) {
+		try (FileReader reader = new FileReader(in.toFile());
+				FileWriter writer = new FileWriter(out.toFile())) {
 
 			int c; // holds Unicode chars. Character based reads are 16 bits.
 			while ((c = reader.read()) != -1) {
@@ -81,7 +85,7 @@ public final class IOUtilities {
 	 *            the destination text file to copy to
 	 * @throws IOException
 	 */
-	public static void lineCopy(File in, File out) throws IOException {
+	public static void lineCopy(Path in, Path out) throws IOException {
 
 		// Buffered streams wrap underlying non-buffered streams.
 		//
@@ -91,8 +95,10 @@ public final class IOUtilities {
 		// BufferedInputStream / BufferedOutputStream - buffered byte streams.
 		// BufferedReader / BufferedWriter - buffered character streams.
 
-		try (BufferedReader reader = new BufferedReader(new FileReader(in));
-				PrintWriter writer = new PrintWriter(new FileWriter(out))) {
+		try (BufferedReader reader = new BufferedReader(new FileReader(
+				in.toFile()));
+				PrintWriter writer = new PrintWriter(new FileWriter(
+						out.toFile()))) {
 
 			String line;
 			while ((line = reader.readLine()) != null) {
@@ -107,7 +113,7 @@ public final class IOUtilities {
 	 * This will *not* write object types.
 	 */
 	public static void dataCopy(List<String> headers, List<Integer> values,
-			File out) throws IOException {
+			Path out) throws IOException {
 
 		Preconditions.checkNotNull(headers);
 		Preconditions.checkNotNull(values);
@@ -115,7 +121,7 @@ public final class IOUtilities {
 		Preconditions.checkArgument(headers.size() == values.size());
 
 		try (DataOutputStream outputStream = new DataOutputStream(
-				new FileOutputStream(out))) {
+				new FileOutputStream(out.toFile()))) {
 
 			for (int i = 0; i < headers.size(); i++) {
 				outputStream.writeUTF(headers.get(i));
@@ -129,14 +135,14 @@ public final class IOUtilities {
 	}
 
 	public static void objectCopy(List<String> headers,
-			List<Serializable> values, File out) throws IOException {
+			List<Serializable> values, Path out) throws IOException {
 
 		Preconditions.checkNotNull(headers);
 		Preconditions.checkNotNull(values);
 		Preconditions.checkNotNull(out);
 
 		try (ObjectOutputStream outputStream = new ObjectOutputStream(
-				new FileOutputStream(out))) {
+				new FileOutputStream(out.toFile()))) {
 
 			for (int i = 0; i < headers.size(); i++) {
 				outputStream.writeObject(headers.get(i));

@@ -6,7 +6,7 @@ Java.
 ## Trail : Learning the Java Language ##
 
 Start here :
-https://docs.oracle.com/javase/tutorial/essential/io/links.html
+https://docs.oracle.com/javase/tutorial/essential/io/notification.html
 
 # Links / Reading History #
 
@@ -38,11 +38,6 @@ This tutorial covered the basics of the most frequently used java classes.
   * The Platform Environment : the java infrastructure.
   * Regular Expressions
 
-The Java NIO.2 package contains underlying byte stream, channel, and buffer classes
-that will require more research to become proficient. It's sufficient to understand
-the major classes and their differences, as well as the use case for each I/O stream
-type.
-
 #### Books ####
 
 [The Java Programming Language](http://www.amazon.com/The-Java-Programming-Language-Edition/dp/0321349806)
@@ -71,6 +66,13 @@ Written by Josh Block, responsible for Java API development at Sun.
 * Advanced I/O : netty or pipeline based I/O. How does Netty's pipeline compare to concatenating streams into a pipeline?
 * How does try-with-resources work behind the scenes? Does the compiler insert `.Close` into a generated `finally` block?
 
+##### Questions #####
+
+* Hotspot : what optimizations does the HotSpot JVM provide?
+* Performance : how does Java perform in real world usage when compared to compiled languages like C, Swift, or Go?
+* Are all the packaging tools (Java Web Start, Java Plug-In) and UI tools (Swing, JavaFX, and Java2D) obsolete?
+  Why would I **ever** want to write a UI in java? All java should be server side or backend, cross platform code
+  wherever necessary.
 
 ###### Language ######
 
@@ -105,12 +107,6 @@ Written by Josh Block, responsible for Java API development at Sun.
 * Iterator : implement a custom iterator.
 * Guava : anything by Google.
 
-#### Questions ####
-* Hotspot : what optimizations does the HotSpot JVM provide?
-* Performance : how does Java perform in real world usage when compared to compiled languages like C, Swift, or Go?
-* Are all the packaging tools (Java Web Start, Java Plug-In) and UI tools (Swing, JavaFX, and Java2D) obsolete?
-  Why would I **ever** want to write a UI in java? All java should be server side or backend, cross platform code
-  wherever necessary.
 
 ## Notes ##
 
