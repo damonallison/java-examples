@@ -21,7 +21,8 @@ import org.junit.Test;
 import com.sun.security.auth.module.UnixSystem;
 
 /**
- * {@code Files}, along with {@code Path} are main entry point into the NIO.2
+ * {@code Files}, along with {@code Path} are main entry point into NIO.2. NIO.2
+ * is all about better file management.
  *
  * Unlike {@code Path}, which typically does not touch the file system,
  * {@code File} performs operations against the file system.
