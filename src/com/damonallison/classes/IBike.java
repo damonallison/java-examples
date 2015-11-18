@@ -54,10 +54,12 @@ public interface IBike extends Comparable<IBike> {
 	 * Interfaces can contain static constants.
 	 *
 	 * Interface constants are implicitly public, static, and final. These
-	 * modifiers don't need to be specified. They are specified here to be
-	 * explicit.
+	 * modifiers don't need to be specified.
+	 *
+	 * They <em>could</em> be specified here as {@code private static final int},
+	 * but since IntelliJ is smart and will clean it up, they are omitted.
 	 */
-	public static final int DEFAULT_WHEELS = 2;
+	int DEFAULT_WHEELS = 2;
 
 	int getSpeed();
 

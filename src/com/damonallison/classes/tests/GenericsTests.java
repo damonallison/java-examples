@@ -18,7 +18,10 @@ import com.damonallison.classes.SuperPair;
 import com.google.common.collect.Lists;
 
 /**
- * Examples of defining and using generic type parameters.
+ * Examples of defining and using generic type parameters. Generics allow you to
+ * specify type constraints on variables or class interfaces. Generics are a
+ * compile time type checking feature. When java is compiled, type erasure
+ * erases the generic type parameters.
  *
  * Type erasure is the process the Java compiler performs when producing
  * bytecode when dealing with generic types and generic type parameters.
@@ -57,7 +60,7 @@ public class GenericsTests {
 	 * shows you how to require a type parameter to conform to multiple types
 	 * (or multiple bounds).
 	 *
-	 * Note if you use multiple bounds, the class must be bounded first:
+	 * Note if you use multiple bounds, the "class" type must be bounded first:
 	 * {@code <K extends Class & Interface & Interface & Interface}
 	 */
 	private <K extends Number & Comparable<K> & Serializable, V> boolean compare(
@@ -77,7 +80,7 @@ public class GenericsTests {
 
 		// If the compiler *cannot* infer the types, you can help the compiler
 		// by explicitly providing the types.
-		assertTrue(this.<Integer, String> compare(p1, p2));
+		assertTrue(this.compare(p1, p2));
 	}
 
 	// If you are dealing with legacy code that works with non-generic
@@ -107,9 +110,9 @@ public class GenericsTests {
 	 *
 	 * <pre>
 	 * For example: {@code Box<Number> and Box<Integer> are not related. You cannot pass a Box<Integer> value into a method declared :
-	 * 
+	 *
 	 * public void printBox(Box<Number> num);
-	 * 
+	 *
 	 * Even tho Integer extends Number. The common parent of Box<Number> and Box<Integer> is Object.
 	 * </pre>
 	 *

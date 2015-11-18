@@ -9,6 +9,8 @@ package com.damonallison.classes;
  */
 public class SuperPair<K, V extends Comparable<V>> extends Pair<K, V> {
 
+	private static final long serialVersionUID = -1974594375586262289L;
+
 	public SuperPair(K key, V value) {
 		super(key, value);
 	}

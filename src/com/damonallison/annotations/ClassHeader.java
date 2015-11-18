@@ -65,8 +65,6 @@ public @interface ClassHeader {
 
 	String date() default "unknown";
 
-	int revision() default 1;
-
 	/**
 	 * A list of people who have reviewed this class.
 	 *

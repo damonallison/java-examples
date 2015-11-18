@@ -101,16 +101,12 @@ public class IOPathTests {
 		// .toRealPath() returns the "real" path of a file. It peforms the
 		// following
 		//
-		// 1. If 'true' is passed to this method and the file system supports
-		// symbolic links,
-		// symbolic links are resolved.
+		// 1. Resolves symbolic links.
 		// 2. If Path is relative, it returns the absolute path.
-		// 3. If Path contains any redundant elements, it returns a path with
-		// those elements removed.
+		// 3. Normalizes paths.
 
 		// Note : by default, /tmp is symlinked on OS X. Therefore, the real
-		// path
-		// will be different than the original path returned from
+		// path will be different than the original path returned from
 		// createTempFile.
 		Path tmp = Files.createTempFile("test", null);
 		assertFalse(tmp.toRealPath().equals(tmp));

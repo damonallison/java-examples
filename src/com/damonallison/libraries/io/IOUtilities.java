@@ -141,6 +141,8 @@ public final class IOUtilities {
 		Preconditions.checkNotNull(values);
 		Preconditions.checkNotNull(out);
 
+		Preconditions.checkArgument(headers.size() == values.size());
+
 		try (ObjectOutputStream outputStream = new ObjectOutputStream(
 				new FileOutputStream(out.toFile()))) {
 
@@ -152,7 +154,6 @@ public final class IOUtilities {
 				outputStream.writeObject(values.get(i));
 			}
 		}
-
 	}
 
 	/**
@@ -168,5 +169,4 @@ public final class IOUtilities {
 		}
 		return lst;
 	}
-
 }

@@ -7,7 +7,10 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.file.FileStore;
+import java.nio.file.FileSystem;
 import java.nio.file.FileSystemException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -78,9 +81,6 @@ public class IOFileTests {
 		assertEquals(lastMod, basicAttrs.creationTime().toMillis());
 		assertEquals(lastMod, basicAttrs.lastAccessTime().toMillis());
 
-		// Get the current username / groupGid from the system
-		UnixSystem us = new UnixSystem();
-
 		//
 		// Posix attributes
 		//
@@ -94,7 +94,11 @@ public class IOFileTests {
 				posixAttrs.permissions().contains(
 						PosixFilePermission.OWNER_READ));
 
-		// Get the currently logged in user - this user should be the owner.
+		// Get the current username / groupGid from the system.
+		UnixSystem us = new UnixSystem();
+
+		// Get the currently logged in user from the file. This user should be
+		// the owner.
 		assertEquals("The current user should have created the temp file", //
 				posixAttrs.owner().getName(), us.getUsername());
 
@@ -112,8 +116,10 @@ public class IOFileTests {
 		// supported,
 		// we get null here.
 		if (view != null) {
+			// Write
 			view.write("mime-type", Charset.defaultCharset().encode("dir"));
 
+			// Read it back.
 			ByteBuffer buf = ByteBuffer.allocate(view.size("mime-type"));
 			view.read("mime-type", buf);
 			buf.flip();
@@ -184,6 +190,10 @@ public class IOFileTests {
 		final Path b = tempDir.resolve("b");
 
 		// Create and test valid symlinks
+		//
+		// /real
+		// /a -> /real
+		// /b -> /a
 		Path real = Files.createDirectory(tempDir.resolve("real"));
 		Files.createSymbolicLink(a, real);
 		Files.createSymbolicLink(b, a);
@@ -212,13 +222,14 @@ public class IOFileTests {
 	 */
 	@Test
 	public void testFileStore() throws IOException {
-		// FileSystem fs = FileSystems.getDefault();
-		// for (FileStore store : fs.getFileStores()) {
-		// long total = store.getTotalSpace();
-		// long used = store.getTotalSpace() - store.getUnallocatedSpace();
-		// long avail = store.getUsableSpace();
-		// System.out.println("looking at " + store + ": total=" + total
-		// + " used=" + used + " avail=" + avail);
-		// }
+		FileSystem fs = FileSystems.getDefault();
+		for (FileStore store : fs.getFileStores()) {
+			long total = store.getTotalSpace();
+			long used = store.getTotalSpace() - store.getUnallocatedSpace();
+			long avail = store.getUsableSpace();
+
+			assertTrue(total >= used);
+			assertTrue(total >= avail);
+		}
 	}
 }

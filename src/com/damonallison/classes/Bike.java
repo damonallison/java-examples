@@ -228,10 +228,7 @@ public class Bike extends AbstractBike implements IBike, Cloneable {
 		if (this.getSpeed() != other.getSpeed()) {
 			return false;
 		}
-		if (this.getWheelCount() != other.getWheelCount()) {
-			return false;
-		}
-		return true;
+		return this.getWheelCount() == other.getWheelCount();
 	}
 
 	/**

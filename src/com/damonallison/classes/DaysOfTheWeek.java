@@ -30,7 +30,7 @@ public enum DaysOfTheWeek {
 	 *
 	 * Enum constructors are always private.
 	 */
-	private DaysOfTheWeek(String slangName) {
+	DaysOfTheWeek(String slangName) {
 		this.slangName = slangName;
 	}
 
