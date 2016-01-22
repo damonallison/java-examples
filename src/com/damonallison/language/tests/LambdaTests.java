@@ -105,12 +105,8 @@ public class LambdaTests {
 		// in parens. In this case, with only one param, we could have omitted
 		// the parens.
 		//
-		List<Bike> fastBikes2 = bikes.stream().filter((b) -> b.getSpeed() > 50) // lambda
-				// expression
-				// equivalent
-				// to
-				// bikePred
-				// above
+		// lambda expression equivalent to bikePred above
+		List<Bike> fastBikes2 = bikes.stream().filter((b) -> b.getSpeed() > 50)
 				.collect(Collectors.toList());
 
 		assertEquals(fastBikes, fastBikes2);
@@ -120,10 +116,10 @@ public class LambdaTests {
 		//
 		// Notice here we omitted the parens. This is legal with a single
 		// parameter only.
+		//
 		// Also notice that the lambda implementation is defined in a block. Any
 		// multi-line lambda must be defined in a block (and include a {@code
-		// return} if
-		// appropriate).
+		// return} if appropriate).
 		//
 		fastBikes.forEach(b -> {
 			assertTrue(b.getSpeed() > 50);

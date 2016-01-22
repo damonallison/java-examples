@@ -78,7 +78,7 @@ public class MethodReferenceTests {
 		// 1. The parameters are inferred from the compareByWheelCount method. 
 		// 2. The body of the lambda calls compareByWheelCount.
 		//
-		// General advice : if you have a lambda expression that does nothing
+		// General usage : if you have a lambda expression that does nothing
 		// but invoke a single method, use a method reference.
 		// 
 		Arrays.sort(bikes, helper::compareByWheelCount);

@@ -57,7 +57,6 @@ import com.google.common.io.Files;
  */
 public class NIOTests {
 
-	@SuppressWarnings("unchecked")
 	static <T> WatchEvent<T> cast(WatchEvent<?> event) {
 		return (WatchEvent<T>) event;
 	}

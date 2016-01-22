@@ -31,7 +31,7 @@ public class OperatorTests {
 	 * As a general rule, wrap ambiguous expressions with parentheses to remove all ambiguity.
 	 */
 	@Test
-	public void testPrescedence() {
+	public void testPrecedence() {
 		// L to R evaluation. Since * and / have equal precedence, you need the inner
 		// parentheses around 200 / 3.
 		int remainder = 200 - (3 * (200 / 3));

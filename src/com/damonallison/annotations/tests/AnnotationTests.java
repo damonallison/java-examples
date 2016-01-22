@@ -41,12 +41,10 @@ public class AnnotationTests {
 		/**
 		 * Retrieve a single annotation.
 		 */
-		Documented d = ClassHeader.class.getAnnotation(Documented.class);
-		assertNotNull(d);
+		assertNotNull(ClassHeader.class.getAnnotation(Documented.class));
 
 		// Annotation doesn't exist.
-		Inherited i = ClassHeader.class.getAnnotation(Inherited.class);
-		assertNull(i);
+		assertNull(ClassHeader.class.getAnnotation(Inherited.class));
 
 		/**
 		 * Retrieve a repeated annotation.
