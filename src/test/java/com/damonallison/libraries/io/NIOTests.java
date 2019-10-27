@@ -17,6 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import com.google.common.io.Files;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -65,7 +66,7 @@ public class NIOTests {
 	 *
 	 * Shows how to execute a background callable in a new thread.
 	 */
-	@Test
+	@Disabled
 	void watchService() throws IOException {
 
 		Path tempDir = Files.createTempDir().toPath();

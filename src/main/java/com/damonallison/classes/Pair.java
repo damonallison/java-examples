@@ -37,7 +37,6 @@ public class Pair<K, V> implements Serializable {
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

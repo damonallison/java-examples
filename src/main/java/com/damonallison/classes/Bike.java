@@ -46,9 +46,12 @@ public class Bike extends AbstractBike implements IBike, Cloneable {
 	private int speed;
 	private int wheelCount;
 
+	//
 	// Variables can be initialized to the results of a method call.
-	// These are set before the static initializer block (for static
-	// variables) or constructor (for instance variables).
+	//
+	// Variables are set before the static initializer block (for static
+	// variables) executes or constructor (for instance variables) executes.
+	//
 	public static final boolean CLASS_CREATED = initializeClassVariable();
 	public static final boolean STATIC_INITIALIZER_INVOKED;
 
@@ -100,8 +103,8 @@ public class Bike extends AbstractBike implements IBike, Cloneable {
 	 */
 	{
 		// System.out.println("initializer 1");
-		speed = 0;
-		wheelCount = 0;
+		this.speed = 0;
+		this.wheelCount = 0;
 		INITIALIZER_INVOKED = true;
 	}
 
