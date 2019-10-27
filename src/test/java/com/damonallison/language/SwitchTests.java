@@ -1,9 +1,10 @@
 package com.damonallison.language;
 
 import com.google.common.base.Preconditions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Created by dallison on 8/8/15.
@@ -46,13 +47,15 @@ public class SwitchTests {
     /**
      * If you use an object, it can't be null!
      */
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testNullSwitch() {
-        String s = null;
-        switch (s) {
-            default:
-                fail();
-        }
-    }
 
+        assertThrows(NullPointerException.class, () -> {
+            String s = null;
+            switch (s) {
+                default:
+                    fail();
+            }
+        });
+    }
 }

@@ -1,9 +1,9 @@
 package com.damonallison.language;
 
 import com.google.common.base.Preconditions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Examples of rather obscure operator usage that I'll probably forget.
@@ -14,7 +14,7 @@ public class OperatorTests {
 	 * Multiple variable declarations can happen on a single line. Assignment is R to L.
 	 */
 	@Test
-	public void testMultipleVariableDeclaration() {
+	void testMultipleVariableDeclaration() {
 		// Multiple declarations are allowed on a single line. Separate with commas.
 		int x, y;
 
@@ -31,7 +31,7 @@ public class OperatorTests {
 	 * As a general rule, wrap ambiguous expressions with parentheses to remove all ambiguity.
 	 */
 	@Test
-	public void testPrecedence() {
+	void testPrecedence() {
 		// L to R evaluation. Since * and / have equal precedence, you need the inner
 		// parentheses around 200 / 3.
 		int remainder = 200 - (3 * (200 / 3));
@@ -48,7 +48,7 @@ public class OperatorTests {
 	 * they have caused many developers subtle bugs over time.
 	 */
 	@Test
-	public void testIncrementOperators() {
+	void testIncrementOperators() {
 
 		int i = 10;
 		// Prefix : the operand (10) is returned prior to being incremented.
@@ -64,7 +64,7 @@ public class OperatorTests {
 	}
 
 	@Test
-	public void testBitwiseOperators() {
+	void testBitwiseOperators() {
 		// 1111
 		int mask = 0xF;
 		assertEquals(15, mask);
@@ -112,7 +112,7 @@ public class OperatorTests {
 	 * object conforms to, up to {@code Object}.
 	 */
 	@Test
-	public void testTypeComparison() {
+	void testTypeComparison() {
 		String s = "damon";
 		assertTrue(s instanceof String);
 		assertTrue(s instanceof java.io.Serializable);
@@ -131,7 +131,7 @@ public class OperatorTests {
 	}
 
 	@Test
-	public void testVarArgs() {
+	void testVarArgs() {
 		String[] expected = new String[] { "damon", "allison" };
 		assertArrayEquals(expected, OperatorTests.echoVarArgs("damon", "allison"));
 	}

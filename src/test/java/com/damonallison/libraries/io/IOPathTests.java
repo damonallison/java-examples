@@ -1,8 +1,6 @@
 package com.damonallison.libraries.io;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
@@ -10,14 +8,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Java 7 Introduced the NIO.2 package. NIO.2 introduced {@link Path} and
  * {@link File}. (Basically everything in the java.nio.file package). These
  * tests show the basic usage of {@link Path}.
  */
-public class IOPathTests {
+class IOPathTests {
 
 	/**
 	 * {@code Path} is the primary entry point into the NIO.2 package.
@@ -26,7 +24,7 @@ public class IOPathTests {
 	 * file system.
 	 */
 	@Test
-	public void pathCreation() {
+	void pathCreation() {
 
 		Path full = Paths.get("/test/path");
 		Path parts = Paths.get("/", "test", "path");
@@ -42,7 +40,7 @@ public class IOPathTests {
 	 * Paths have both string and URI representations.
 	 */
 	@Test
-	public void pathConversion() {
+	void pathConversion() {
 		Path p = Paths.get("/this/is/a/test.txt"); // from string
 		assertEquals(p.toString(), "/this/is/a/test.txt"); // to string
 
@@ -54,20 +52,17 @@ public class IOPathTests {
 	}
 
 	@Test
-	public void pathParsing() {
+	void pathParsing() {
 		String pathStr = "/this/is/a/path.tmp";
 		Path p = Paths.get(pathStr); // String -> Path
 
 		assertEquals(pathStr, p.toString()); // Path -> String
 		assertTrue(p.isAbsolute());
-		assertEquals("getFileName() returns the last path component.",
-				"path.tmp", p.getFileName().toString());
+		assertEquals("path.tmp", p.getFileName().toString(), "getFileName() returns the last path component.");
 
 		// Java uses the term "name" to refer to each path component.
-		assertEquals("each path component is a 'name'", 4, p.getNameCount());
-		assertEquals(
-				"getName() will return the component at the given position. Note that 0 is *not* the root '/'",
-				"this", p.getName(0).toString());
+		assertEquals(4, p.getNameCount(), "each path component is a 'name'");
+		assertEquals("this", p.getName(0).toString(), "getName() will return the component at the given position. Note that 0 is *not* the root '/'");
 
 		// The root path will be different based on OS. We can't always assume
 		// "/" - it may be "C:/"
@@ -78,18 +73,16 @@ public class IOPathTests {
 	}
 
 	@Test
-	public void pathComparison() throws IOException {
+	void pathComparison() throws IOException {
 		Path parent = Paths.get("/this/is/a");
 		Path child = parent.resolve("test.txt"); // Combines paths.
 		Path free = Paths.get("test.txt");
 
 		assertEquals("/this/is/a/test.txt", child.toString());
 
-		assertTrue("determining parent / child relationship using startsWith",
-				child.startsWith(parent));
+		assertTrue(child.startsWith(parent), "determining parent / child relationship using startsWith");
 
-		assertTrue("determining if two paths have the same leafs",
-				child.endsWith(free));
+		assertTrue(child.endsWith(free), "determining if two paths have the same leafs");
 
 		// Determine if two paths resolve to the same file (resolves symlinks).
 		// If the paths are identical, no file system operation is performed.
@@ -120,7 +113,7 @@ public class IOPathTests {
 	 * refer to a symbolic link could make the path invalid.
 	 */
 	@Test
-	public void pathNormalization() {
+	void pathNormalization() {
 
 		// Final path should be /test/file
 		Path p = Paths.get("/test/./child/../file");
@@ -140,7 +133,7 @@ public class IOPathTests {
 	 * Resolve and Relativize create paths between two objects.
 	 */
 	@Test
-	public void pathJoining() {
+	void pathJoining() {
 		Path p = Paths.get("/this/is/a");
 
 		// Resolving a partial path will append it.

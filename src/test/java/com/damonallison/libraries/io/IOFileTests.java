@@ -1,9 +1,5 @@
 package com.damonallison.libraries.io;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -19,9 +15,10 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.nio.file.spi.FileSystemProvider;
 
-import org.junit.Test;
-
 import com.sun.security.auth.module.UnixSystem;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * {@code Files}, along with {@code Path} are main entry point into NIO.2. NIO.2
@@ -33,7 +30,7 @@ import com.sun.security.auth.module.UnixSystem;
  * {@link Files} is a main entry point into the NIO.2 package. Files contains
  * static methods.
  */
-public class IOFileTests {
+class IOFileTests {
 
 	/**
 	 * The static class {@link Files} contains a comprehensive list of
@@ -46,7 +43,7 @@ public class IOFileTests {
 	 * This test shows the use of {@link Files} to read metadata (attributes).
 	 */
 	@Test
-	public void fileAttributes() throws IOException {
+	void fileAttributes() throws IOException {
 
 		Path tempDir = Files.createTempDirectory("temp"); // creates temp.tmp
 
@@ -89,10 +86,7 @@ public class IOFileTests {
 		PosixFileAttributes posixAttrs = Files.readAttributes(tempDir,
 				PosixFileAttributes.class);
 
-		assertTrue(
-				"The owner should be able to read a temp file!", //
-				posixAttrs.permissions().contains(
-						PosixFilePermission.OWNER_READ));
+		assertTrue(posixAttrs.permissions().contains(PosixFilePermission.OWNER_READ));
 
 		// Get the current username / groupGid from the system.
 		UnixSystem us = new UnixSystem();
@@ -105,8 +99,7 @@ public class IOFileTests {
 		// Get the GID of the file.
 		Integer gid = (Integer) Files.readAttributes(tempDir, "unix:gid").get(
 				"gid");
-		assertEquals("The current group should be the group on the temp file", //
-				us.getGid(), gid.longValue());
+		assertEquals(us.getGid(), gid.longValue(), "The current group should be the group on the temp file");
 
 		// Example reading / writing custom attributes.
 		UserDefinedFileAttributeView view = Files.getFileAttributeView(tempDir,
@@ -140,7 +133,7 @@ public class IOFileTests {
 	 * </ul>
 	 */
 	@Test
-	public void testSymbolicLinks() throws IOException {
+	void testSymbolicLinks() throws IOException {
 
 		/*-
 		 * Creates
@@ -183,36 +176,38 @@ public class IOFileTests {
 		assertEquals(textFile.toRealPath(), symlink.toRealPath());
 	}
 
-	@Test(expected = FileSystemException.class)
+	@Test
 	public void testCircularLinks() throws IOException {
-		final Path tempDir = Files.createTempDirectory("tmp").toRealPath();
-		final Path a = tempDir.resolve("a");
-		final Path b = tempDir.resolve("b");
+		assertThrows(FileSystemException.class, () -> {
+			final Path tempDir = Files.createTempDirectory("tmp").toRealPath();
+			final Path a = tempDir.resolve("a");
+			final Path b = tempDir.resolve("b");
 
-		// Create and test valid symlinks
-		//
-		// /real
-		// /a -> /real
-		// /b -> /a
-		Path real = Files.createDirectory(tempDir.resolve("real"));
-		Files.createSymbolicLink(a, real);
-		Files.createSymbolicLink(b, a);
+			// Create and test valid symlinks
+			//
+			// /real
+			// /a -> /real
+			// /b -> /a
+			Path real = Files.createDirectory(tempDir.resolve("real"));
+			Files.createSymbolicLink(a, real);
+			Files.createSymbolicLink(b, a);
 
-		assertEquals(real, a.toRealPath());
-		assertEquals(real, b.toRealPath());
+			assertEquals(real, a.toRealPath());
+			assertEquals(real, b.toRealPath());
 
-		// Create a circular dependency c -> a and a -> c
-		final Path c = tempDir.resolve("c");
-		Files.createSymbolicLink(c, a);
-		Files.delete(a);
-		Files.createSymbolicLink(a, c);
+			// Create a circular dependency c -> a and a -> c
+			final Path c = tempDir.resolve("c");
+			Files.createSymbolicLink(c, a);
+			Files.delete(a);
+			Files.createSymbolicLink(a, c);
 
-		// Now try to resolve a symbolic link.
-		// This will throw a FileSystemException:
-		// "Too many levels of symbolic links"
-		final Path resolved = c.toRealPath();
-		fail("Circular path dependency should have failed "
-				+ resolved.toString());
+			// Now try to resolve a symbolic link.
+			// This will throw a FileSystemException:
+			// "Too many levels of symbolic links"
+			final Path resolved = c.toRealPath();
+			fail("Circular path dependency should have failed "
+					+ resolved.toString());
+		});
 	}
 
 	/**
@@ -221,7 +216,7 @@ public class IOFileTests {
 	 * @throws IOException
 	 */
 	@Test
-	public void testFileStore() throws IOException {
+	void testFileStore() throws IOException {
 		FileSystem fs = FileSystems.getDefault();
 		for (FileStore store : fs.getFileStores()) {
 			long total = store.getTotalSpace();

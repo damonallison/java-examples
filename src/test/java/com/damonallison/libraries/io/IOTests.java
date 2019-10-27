@@ -1,38 +1,19 @@
 package com.damonallison.libraries.io;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import com.damonallison.classes.Pair;
+import com.google.common.collect.Lists;
+import org.junit.jupiter.api.Test;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.io.Serializable;
-import java.io.StringWriter;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
-import java.nio.file.DirectoryNotEmptyException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.junit.Test;
-
-import com.damonallison.classes.Pair;
-import com.damonallison.libraries.io.IOUtilities;
-import com.google.common.collect.Lists;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests which show I/O operations against files (reading / writing).
@@ -111,7 +92,7 @@ public class IOTests {
 	 * atomic {@code Files}.
 	 */
 	@Test
-	public void fileCopy() throws IOException {
+	void fileCopy() throws IOException {
 
 		final byte[] bytes = "Damon Allison".getBytes();
 
@@ -122,27 +103,27 @@ public class IOTests {
 
 		// Easiest read/write operations.
 		Files.write(in, bytes);
-		assertTrue(Arrays.equals(bytes, Files.readAllBytes(in)));
+		assertArrayEquals(bytes, Files.readAllBytes(in));
 
 		// The dead simple way to copy a file is:
 		Path copy = Files.createTempFile("copy", null);
 		Files.delete(copy);
 		Files.copy(new FileInputStream(in.toFile()), copy);
-		assertTrue(Arrays.equals(bytes, Files.readAllBytes(copy)));
+		assertArrayEquals(bytes, Files.readAllBytes(copy));
 
 		// byte-by-byte copy
 		IOUtilities.byteCopy(in, outBytes);
-		assertTrue(Arrays.equals(bytes, Files.readAllBytes(outBytes)));
+		assertArrayEquals(bytes, Files.readAllBytes(outBytes));
 
 		// char-by-char copy
 		IOUtilities.charCopy(in, outText);
-		assertTrue(Arrays.equals(bytes, Files.readAllBytes(outText)));
+		assertArrayEquals(bytes, Files.readAllBytes(outText));
 
 		// line copy
 		IOUtilities.lineCopy(in, outLines);
 		final byte[] line = ("Damon Allison" + System.lineSeparator())
 				.getBytes();
-		assertTrue(Arrays.equals(line, Files.readAllBytes(outLines)));
+		assertArrayEquals(line, Files.readAllBytes(outLines));
 	}
 
 	/**
@@ -152,12 +133,12 @@ public class IOTests {
 	 * @throws IOException
 	 */
 	@Test
-	public void dataCopy() throws IOException {
+	void dataCopy() throws IOException {
 		List<String> headers = new ArrayList<>();
 		List<Integer> values = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
 			headers.add(String.format("header %d", i));
-			values.add(Integer.valueOf(i));
+			values.add(i);
 		}
 		Path outData = Files.createTempFile("outdata", null);
 		IOUtilities.dataCopy(headers, values, outData);
@@ -173,7 +154,7 @@ public class IOTests {
 			}
 
 			for (int i = 0; i < 10; i++) {
-				inValues.add(Integer.valueOf(inputStream.readInt()));
+				inValues.add(inputStream.readInt());
 			}
 		}
 
@@ -194,7 +175,7 @@ public class IOTests {
 	 */
 	@SuppressWarnings("unchecked")
 	@Test
-	public void objectCopy() throws IOException, ClassNotFoundException {
+	void objectCopy() throws IOException, ClassNotFoundException {
 		List<String> headers = new ArrayList<>();
 		List<Serializable> values = new ArrayList<>();
 
@@ -228,7 +209,7 @@ public class IOTests {
 	}
 
 	@Test
-	public void testScanner() {
+	void testScanner() {
 		String input = "  Damon     Ryan			Allison  ";
 		List<String> expected = Lists.newArrayList("Damon", "Ryan", "Allison");
 		List<String> actual = IOUtilities.tokenize(input,
@@ -237,7 +218,7 @@ public class IOTests {
 	}
 
 	@Test
-	public void testFormatter() throws IOException {
+	void testFormatter() throws IOException {
 
 		// PrintWriter implements formatting.
 		try (StringWriter sw = new StringWriter();
@@ -259,7 +240,7 @@ public class IOTests {
 	 * files, and have memory-mapped I/O regions for optimal performance.
 	 */
 	@Test
-	public void fileReadingWriting() throws IOException {
+	void fileReadingWriting() throws IOException {
 
 		// Simple read/write operations on Files.
 
@@ -287,8 +268,7 @@ public class IOTests {
 				writer.write(line);
 			}
 		}
-		assertTrue(Arrays.equals(Files.readAllBytes(tempPath),
-				Files.readAllBytes(copyPath)));
+		assertArrayEquals(Files.readAllBytes(tempPath), Files.readAllBytes(copyPath));
 
 		Files.delete(copyPath);
 
@@ -314,8 +294,7 @@ public class IOTests {
 				buf.rewind(); // prepares the buf for the next read.
 			}
 		}
-		assertTrue(Arrays.equals(Files.readAllBytes(tempPath),
-				Files.readAllBytes(copyPath)));
+		assertArrayEquals(Files.readAllBytes(tempPath), Files.readAllBytes(copyPath));
 	}
 
 	/*-
@@ -334,7 +313,7 @@ public class IOTests {
 	 *                '{foo*, *[0-9]*}
 	 */
 	@Test
-	public void testDirectoryReading() throws IOException {
+	void testDirectoryReading() throws IOException {
 
 		// TODO : recursive tree walking requires a FileVisitor.
 		// Implement a FileVisitor which returns a list of paths (sorted)

@@ -1,8 +1,5 @@
 package com.damonallison.language;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -10,10 +7,12 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import org.junit.Test;
-
 import com.damonallison.classes.Bike;
 import com.damonallison.classes.Bike.BikeBuilder;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Lambda expressions (lambdas) allow you to express instances of single-method
@@ -237,12 +236,10 @@ public class LambdaTests {
 		.collect(Collectors.toList());
 
 		assertTrue(filtered2.size() == 49);
-		assertTrue("Should be sorted by gear, ascending", filtered2.get(0)
-				.getGear() == 2);
+		assertTrue(filtered2.get(0).getGear() == 2, "Should be sorted by gear, ascending");
 
-		// Map
-		int[] gearMap = bikes.stream().mapToInt(bike -> bike.getGear())
-				.toArray();
+				// Map
+		int[] gearMap = bikes.stream().mapToInt(bike -> bike.getGear()).toArray();
 
 		assertTrue(gearMap[0] == 99);
 		assertTrue(gearMap[gearMap.length - 1] == 1);

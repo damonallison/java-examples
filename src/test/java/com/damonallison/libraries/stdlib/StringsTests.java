@@ -1,19 +1,16 @@
 package com.damonallison.libraries.stdlib;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.util.Arrays;
 
-import org.junit.Test;
-
 import com.google.common.collect.Lists;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class StringsTests {
 
 	@Test
-	public void testCharacters() {
+	void testCharacters() {
 		char[] name = { 'd', 'a', 'm', 'o', 'n' };
 		assertTrue(Character.isLetter('d'));
 
@@ -22,7 +19,7 @@ public class StringsTests {
 	}
 
 	@Test
-	public void testStringParsing() {
+	void testStringParsing() {
 
 		String name = " damon ; allison ";
 
@@ -43,7 +40,7 @@ public class StringsTests {
 	 * {@link StringBuilder} is *not* thread safe (probably performs better).
 	 */
 	@Test
-	public void testStringBuffer() {
+	void testStringBuffer() {
 
 		StringBuffer sb = new StringBuffer();
 		sb.append("nomad");
@@ -53,7 +50,7 @@ public class StringsTests {
 	}
 
 	@Test
-	public void testFindInitials() {
+	void testFindInitials() {
 		String s = "Damon R. Allison";
 		String[] parts = s.split("\\s+");
 
@@ -64,13 +61,13 @@ public class StringsTests {
 	}
 
 	@Test
-	public void testAnagrams() {
+	void testAnagrams() {
 		assertTrue(areAnagrams("damon", "nomad"));    // happy path
 		assertTrue(areAnagrams("  Damon ", "dmaon")); // whitespace and casing
 		assertFalse(areAnagrams("ddamon", "damon"));  // different strings
 	}
 
-	public boolean areAnagrams(String s1, String s2) {
+	boolean areAnagrams(String s1, String s2) {
 		// Strip all whitespace
 		s1 = s1.replaceAll("\\s*", "");
 		s2 = s2.replaceAll("\\s*", "");

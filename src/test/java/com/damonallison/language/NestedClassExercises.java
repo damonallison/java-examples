@@ -1,9 +1,8 @@
 package com.damonallison.language;
 
-import org.junit.Test;
-
 import com.damonallison.classes.DataStructure;
 import com.damonallison.classes.DataStructure.DataStructureIterator;
+import org.junit.jupiter.api.Test;
 
 /**
  * Nested Classes Exercises from :

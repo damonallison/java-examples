@@ -1,8 +1,5 @@
 package com.damonallison.libraries.io;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -19,9 +16,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.junit.Test;
-
 import com.google.common.io.Files;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Java 1.4 introduced NIO. Before NIO, server applications had to dedicate a
@@ -65,16 +64,15 @@ public class NIOTests {
 	 * An example {@link WatchService} that will listen for file system events.
 	 *
 	 * Shows how to execute a background callable in a new thread.
-	 *
 	 */
 	@Test
-	public void watchService() throws IOException {
+	void watchService() throws IOException {
 
 		Path tempDir = Files.createTempDir().toPath();
 		WatchService watchService = FileSystems.getDefault().newWatchService();
-		tempDir.register(watchService, //
-				StandardWatchEventKinds.ENTRY_CREATE, //
-				StandardWatchEventKinds.ENTRY_DELETE, //
+		tempDir.register(watchService,
+				StandardWatchEventKinds.ENTRY_CREATE,
+				StandardWatchEventKinds.ENTRY_DELETE,
 				StandardWatchEventKinds.ENTRY_MODIFY);
 
 		final Runnable watcherReadyRunnable;

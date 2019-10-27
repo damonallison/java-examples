@@ -1,11 +1,9 @@
 package com.damonallison.language;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-
 import com.damonallison.classes.DaysOfTheWeek;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class EnumTests {
 	/**
@@ -31,8 +29,10 @@ public class EnumTests {
 	/**
 	 * Attempting to parse an invalid value will throw an {@link IllegalArgumentException}
 	 */
-	@Test (expected = IllegalArgumentException.class)
+	@Test
 	public void testInvalidName() {
-		DaysOfTheWeek.valueOf("not valid");
+		assertThrows(IllegalArgumentException.class, () -> {
+			DaysOfTheWeek.valueOf("not valid");
+		});
 	}
 }

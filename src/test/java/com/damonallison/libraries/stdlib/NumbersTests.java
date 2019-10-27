@@ -1,12 +1,12 @@
 package com.damonallison.libraries.stdlib;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
 
 import java.text.DecimalFormat;
 import java.util.Random;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Java provides wrapper types for primitives and the compiler will automatically box/unbox when needed.
@@ -43,7 +43,7 @@ public class NumbersTests {
 	}
 
 	@Test
-	public void testNumberPrinting() {
+	void testNumberPrinting() {
 
 		// %f == float
 		// %d == decimal
