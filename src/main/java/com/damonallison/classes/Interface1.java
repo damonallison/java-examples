@@ -5,8 +5,8 @@ package com.damonallison.classes;
  */
 public interface Interface1 {
 
-	default int getValue() {
-		return 1;
-	}
+    default int getValue() {
+        return 1;
+    }
 
 }

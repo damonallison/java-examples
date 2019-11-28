@@ -7,14 +7,14 @@ package com.damonallison.classes;
  */
 public abstract class AbstractBike {
 
-	private int gear;
+    private int gear;
 
-	public AbstractBike(int gear) {
-		this.gear = gear;
-	}
+    public AbstractBike(int gear) {
+        this.gear = gear;
+    }
 
-	public int getGear() {
-		return gear;
-	}
+    public int getGear() {
+        return gear;
+    }
 
 }

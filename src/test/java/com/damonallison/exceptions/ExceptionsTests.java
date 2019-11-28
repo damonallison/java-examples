@@ -1,11 +1,10 @@
 package com.damonallison.exceptions;
 
+import org.junit.jupiter.api.Test;
+
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import com.damonallison.exceptions.DamonException;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -53,83 +52,80 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 class ExceptionsTests {
 
-	/**
-	 * Checked exceptions ({@link IOException} must be caught or declared in the
-	 * {@code throws} clause of the method declaration. Unchecked exceptions
-	 * {@link IllegalArgumentException} do *not* have to be declared in the
-	 * method declaration (and typically are not). Adding unchecked exceptions
-	 * to the throws clause is for documentation purposes, to inform the caller
-	 * that the method will throw this exception.
-	 *
-	 *
-	 * @throws IOException
-	 *             thrown if files do not exist.
-	 * @throws IllegalArgumentException
-	 *             not really thrown from this function, but here for
-	 *             documentation purposes
-	 */
-	private void checkedExceptionExample() throws IOException,
-			IllegalArgumentException {
-		// Example showing multiple resources declared in the try-with-resources
-		// statement.
-		try (FileWriter outStream = new FileWriter("/not/there");
-				FileWriter outStream2 = new FileWriter("/not/there2")) {
-			// this block will never be invoked. The previous line will throw a
-			// {@code FileNotFoundException}, which derives from {@code
-			// IOException}.
-			outStream.write("hello, java");
-		}
-	}
+    /**
+     * Checked exceptions ({@link IOException} must be caught or declared in the
+     * {@code throws} clause of the method declaration. Unchecked exceptions
+     * {@link IllegalArgumentException} do *not* have to be declared in the
+     * method declaration (and typically are not). Adding unchecked exceptions
+     * to the throws clause is for documentation purposes, to inform the caller
+     * that the method will throw this exception.
+     *
+     * @throws IOException              thrown if files do not exist.
+     * @throws IllegalArgumentException not really thrown from this function, but here for
+     *                                  documentation purposes
+     */
+    private void checkedExceptionExample() throws IOException,
+            IllegalArgumentException {
+        // Example showing multiple resources declared in the try-with-resources
+        // statement.
+        try (FileWriter outStream = new FileWriter("/not/there");
+             FileWriter outStream2 = new FileWriter("/not/there2")) {
+            // this block will never be invoked. The previous line will throw a
+            // {@code FileNotFoundException}, which derives from {@code
+            // IOException}.
+            outStream.write("hello, java");
+        }
+    }
 
-	/**
-	 * If a method can throw a checked exception, it must be declared. Here,
-	 * because we do not catch the {@link IOException} that
-	 * {@link #checkedExceptionExample()} can throw, we declare
-	 * {@code throws IOException} in this method declaration.
-	 *
-	 * @throws IOException
-	 */
-	@Test()
-	public void testCheckedExceptionCanThrow() throws IOException {
-		assertThrows(FileNotFoundException.class, () -> {
-			this.checkedExceptionExample();
-		});
-	}
+    /**
+     * If a method can throw a checked exception, it must be declared. Here,
+     * because we do not catch the {@link IOException} that
+     * {@link #checkedExceptionExample()} can throw, we declare
+     * {@code throws IOException} in this method declaration.
+     *
+     * @throws IOException
+     */
+    @Test()
+    public void testCheckedExceptionCanThrow() throws IOException {
+        assertThrows(FileNotFoundException.class, () -> {
+            this.checkedExceptionExample();
+        });
+    }
 
-	/**
-	 * Example of handling exceptions. Multiple catch, finally.
-	 */
-	@Test
-	public void testCheckedExceptionCannotThrow() {
-		try {
-			this.checkedExceptionExample();
-		} catch (FileNotFoundException e) {
-			// FileNotFoundException is a child of IOException. Always catch
-			// exception subclasses before superclases. Specifying a catch for a
-			// superclass prior to a subclass is a compile error.
-		} catch (IOException e) {
-			// This example throws an unchecked exception in place of the
-			// checked exception. This is something you should *not* do - Sun
-			// recommends you do not throw unchecked exceptions.
-			throw new IllegalArgumentException("Bad file name!", e);
-		} catch (IllegalArgumentException e) {
+    /**
+     * Example of handling exceptions. Multiple catch, finally.
+     */
+    @Test
+    public void testCheckedExceptionCannotThrow() {
+        try {
+            this.checkedExceptionExample();
+        } catch (FileNotFoundException e) {
+            // FileNotFoundException is a child of IOException. Always catch
+            // exception subclasses before superclases. Specifying a catch for a
+            // superclass prior to a subclass is a compile error.
+        } catch (IOException e) {
+            // This example throws an unchecked exception in place of the
+            // checked exception. This is something you should *not* do - Sun
+            // recommends you do not throw unchecked exceptions.
+            throw new IllegalArgumentException("Bad file name!", e);
+        } catch (IllegalArgumentException e) {
 
-		} finally {
-			// put all cleanup code (e.g., resource closing) in a finally block.
-			// finally blocks always execute. For {@link AutoCloseable}
-			// resources, use
-			// try with resources (try (Resource r = new Resource()) {})
-		}
-	}
+        } finally {
+            // put all cleanup code (e.g., resource closing) in a finally block.
+            // finally blocks always execute. For {@link AutoCloseable}
+            // resources, use
+            // try with resources (try (Resource r = new Resource()) {})
+        }
+    }
 
-	@Test
-	public void testCustomException() {
-		// Custom exceptions are used to hold custom state to describe the
-		// exception.
-		try {
-			throw new DamonException("damon");
-		} catch (DamonException e) {
-			assertEquals("damon", e.getUserId());
-		}
-	}
+    @Test
+    public void testCustomException() {
+        // Custom exceptions are used to hold custom state to describe the
+        // exception.
+        try {
+            throw new DamonException("damon");
+        } catch (DamonException e) {
+            assertEquals("damon", e.getUserId());
+        }
+    }
 }
