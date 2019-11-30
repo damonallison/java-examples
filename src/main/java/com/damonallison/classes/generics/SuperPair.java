@@ -1,4 +1,4 @@
-package com.damonallison.classes;
+package com.damonallison.classes.generics;
 
 /**
  * Shows creating a subtype of a generic class.

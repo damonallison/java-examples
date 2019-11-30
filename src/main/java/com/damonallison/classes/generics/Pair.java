@@ -1,4 +1,4 @@
-package com.damonallison.classes;
+package com.damonallison.classes.generics;
 
 import java.io.Serializable;
 

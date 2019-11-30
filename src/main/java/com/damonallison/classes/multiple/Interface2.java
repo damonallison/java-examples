@@ -1,4 +1,4 @@
-package com.damonallison.classes;
+package com.damonallison.classes.multiple;
 
 /**
  * Part of an example showing multiple inheritance. See {@link MultipleInheritance}
@@ -6,7 +6,7 @@ package com.damonallison.classes;
 public interface Interface2 {
 
     default int getValue() {
-        return 1;
+        return 2;
     }
 
 }

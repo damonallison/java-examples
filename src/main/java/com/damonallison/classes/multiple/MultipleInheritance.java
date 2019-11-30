@@ -1,4 +1,4 @@
-package com.damonallison.classes;
+package com.damonallison.classes.multiple;
 
 /**
  * This class inherits two interfaces, both with the same default method.
@@ -19,5 +19,8 @@ public class MultipleInheritance implements Interface1, Interface2 {
     public int getValue() {
         // shows an example of calling into interface1's implementation.
         return Interface1.super.getValue();
+    }
+    public int getValueFromi2() {
+        return Interface2.super.getValue();
     }
 }

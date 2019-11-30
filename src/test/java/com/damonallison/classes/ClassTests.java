@@ -2,6 +2,7 @@ package com.damonallison.classes;
 
 import com.damonallison.classes.Bike.BikeBuilder;
 import com.damonallison.classes.MountainBike.MountainBikeBuilder;
+import com.damonallison.classes.multiple.MultipleInheritance;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -13,11 +14,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class ClassTests {
 
     /**
-     * Tests the initialization order for members of a class:
+     * Tests the initialization order for members of a class.
      *
+     * Static instance variables (and static constructors) are invoked
+     * prior to an object instance first usage.
+     *
+     * The class initialization order is as follows:
      * <ol>
-     * <li>Static variables are initialized. They can be initialized to the
-     * results of a method call</li>
+     * <li>Static variables</li>
      * <li>Static initializer block(s)</li>
      * <li>Instance variables</li>
      * <li>Initializer Blocks</li>
@@ -26,11 +30,6 @@ class ClassTests {
      */
     @Test
     void testInitializationOrder() {
-		/*
-		  Static instance variables (and static constructors) are invoked prior
-		  to it's first usage. (When the class is first loaded or used, not
-		  sure which).
-		 */
         // Proves the static initializer was invoked.
         assertTrue(Bike.STATIC_INITIALIZER_INVOKED);
         assertTrue(Bike.CLASS_CREATED);
@@ -201,6 +200,11 @@ class ClassTests {
         mbb.setMaxElevation(100);
         MountainBike mb = mbb.build();
         assertEquals(100, mb.getMaxElevation());
+
+        // instanceof will determine if an object is of a particular type
+        Bike b = null;
+        assertTrue(b instanceof Bike);
+        assertFalse(b instanceof MountainBike);
     }
 
     /**
@@ -224,6 +228,7 @@ class ClassTests {
     void testMultipleInterfaceInheritance() {
         MultipleInheritance mi = new MultipleInheritance();
         assertEquals(1, mi.getValue());
+        assertEquals(2, mi.getValueFromi2());
     }
 
     /**

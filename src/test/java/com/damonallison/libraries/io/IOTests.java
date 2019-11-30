@@ -1,6 +1,6 @@
 package com.damonallison.libraries.io;
 
-import com.damonallison.classes.Pair;
+import com.damonallison.classes.generics.Pair;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 

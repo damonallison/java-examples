@@ -1,4 +1,4 @@
-package com.damonallison.classes;
+package com.damonallison.classes.multiple;
 
 /**
  * Part of an example showing multiple inheritance. See {@link MultipleInheritance}

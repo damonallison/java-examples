@@ -7,7 +7,7 @@ package com.damonallison.classes;
  */
 public abstract class AbstractBike {
 
-    private int gear;
+    private final int gear;
 
     public AbstractBike(int gear) {
         this.gear = gear;

@@ -4,6 +4,14 @@ public class MountainBike extends Bike {
 
     private int maxElevation;
 
+    /**
+     * Constructors are <i>not</i> inherited from their superclass.
+     *
+     * @param speed The speed the bike is currently traveling
+     * @param gear The gear the bike is in
+     * @param wheelCount The number of wheels the bike has
+     * @param maxElevation The recommended max elevation the MountainBike should travel in
+     */
     private MountainBike(int speed, int gear, int wheelCount, int maxElevation) {
         super(speed, gear, wheelCount);
         this.maxElevation = maxElevation;

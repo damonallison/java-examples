@@ -1,5 +1,7 @@
 package com.damonallison.classes;
 
+import com.damonallison.classes.generics.Pair;
+import com.damonallison.classes.generics.SuperPair;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 
@@ -108,7 +110,7 @@ class GenericsTests {
      * Even tho Integer extends Number. The common parent of Box<Number> and Box<Integer> is Object.
      * </pre>
      * <p>
-     * You can subtype a generic class by extending it. {@link SuperPair}
+     * You can subtype a generic class by extending it. {@link SuperPair }
      * extends {@link Pair} to illustrate this point. As long as you don't vary
      * the type argument, the subtyping relationship is preserved between the
      * types.

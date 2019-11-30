@@ -6,8 +6,6 @@ import java.util.function.Function;
 /**
  * DataStructure is a sample class that was created by Oracle and used as the
  * basis for lesson exercises.
- *
- * @see NestedClassExercises
  */
 public class DataStructure {
 

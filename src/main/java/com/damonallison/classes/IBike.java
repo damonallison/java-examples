@@ -1,18 +1,24 @@
 package com.damonallison.classes;
 
 /**
- * Interfaces can be public or package accessible. Package is the default.
+ * Interfaces are reference types, similar to a class, that can only contain
+ *
  * <p>
  * Interfaces can contain:
  * <ul>
  * <li>Constants
- * <li>Method signatures
+ * <li>Method signatures (a.k.a, "abstract" methods)
  * <li>Default methods
  * <li>Static methods
  * <li>Nested types
  * <p>
+ *
+ * Interfaces can be public or package accessible. Package is the default.
+ *
  * All methods on an interface are implicitly public, so you can omit the modifier.
  * All constants on an interface are implicitly public, so you can omit the modifiers.
+ *
+ * Default and static methods can be added to an interface without breaking backwards compatibility.
  */
 public interface IBike extends Comparable<IBike> {
 
