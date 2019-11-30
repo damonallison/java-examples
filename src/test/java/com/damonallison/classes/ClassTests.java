@@ -202,7 +202,7 @@ class ClassTests {
         assertEquals(100, mb.getMaxElevation());
 
         // instanceof will determine if an object is of a particular type
-        Bike b = null;
+        Bike b = BikeBuilder.newBuilder().setGear(1).setSpeed(2).setWheelCount(2).build();
         assertTrue(b instanceof Bike);
         assertFalse(b instanceof MountainBike);
     }

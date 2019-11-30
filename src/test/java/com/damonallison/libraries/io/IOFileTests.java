@@ -11,6 +11,7 @@ import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.nio.file.spi.FileSystemProvider;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class IOFileTests {
 
+    private static final Logger LOGGER = Logger.getLogger(IOFileTests.class.getName());
     /**
      * The static class {@link Files} contains a comprehensive list of
      * operations that can be performed against files. It delegates to other
@@ -40,6 +42,7 @@ class IOFileTests {
     void fileAttributes() throws IOException {
 
         Path tempDir = Files.createTempDirectory("temp"); // creates temp.tmp
+        LOGGER.info("tempDir: " + tempDir.toAbsolutePath().toString());
 
         // Reading file attributes.
         //
@@ -50,9 +53,9 @@ class IOFileTests {
 
         assertTrue(Files.exists(tempDir));
         assertTrue(Files.isDirectory(tempDir));
-        assertTrue(Files.isReadable(tempDir) && //
-                Files.isWritable(tempDir) && //
-                Files.isExecutable(tempDir));
+        assertTrue(Files.isReadable(tempDir));
+        assertTrue(Files.isWritable(tempDir));
+        assertTrue(Files.isExecutable(tempDir));
 
         //
         // Basic Attributes
@@ -64,13 +67,10 @@ class IOFileTests {
         // File attributes are grouped into "Views". A view maps to
         // a particular file system implementation. In the Following example,
         // {@code BasicFileAttributes} is a view.
-
+        //
         long lastMod = Files.getLastModifiedTime(tempDir).toMillis();
-        BasicFileAttributes basicAttrs = Files.readAttributes(tempDir,
-                BasicFileAttributes.class);
+        BasicFileAttributes basicAttrs = Files.readAttributes(tempDir, BasicFileAttributes.class);
         assertEquals(lastMod, basicAttrs.lastModifiedTime().toMillis());
-        assertEquals(lastMod, basicAttrs.creationTime().toMillis());
-        assertEquals(lastMod, basicAttrs.lastAccessTime().toMillis());
 
         //
         // Posix attributes
