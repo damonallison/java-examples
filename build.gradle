@@ -4,8 +4,6 @@ plugins {
 
 version '1.0'
 
-sourceCompatibility = JavaVersion.current()
-
 repositories {
     mavenCentral()
 }

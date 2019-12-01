@@ -3,7 +3,7 @@ package com.damonallison.classes.generics;
 import java.io.Serializable;
 
 /**
- * A simple generic class that holds a type.
+ * A simple pair data structure which allows any key or value type.
  * <p>
  * The term "generic class" can be misleading. It's simply a class that has one
  * or more generic type parameters.

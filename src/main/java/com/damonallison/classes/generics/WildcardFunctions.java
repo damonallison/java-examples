@@ -10,10 +10,18 @@ import java.util.List;
  *
  * Lower bounded wildcards allow you to pass a tyoe or any supertype.
  *
- * Unboundedd wildcards allow you to pass any type. Useful if you don't need
+ * Unbounded wildcards allow you to pass any type. Useful if you don't need
  * to access the actual object at all. (i.e., data structures / collections)
  *
- * @param <T>
+ * Generic wildcard guidelines:
+ *
+ * * "In" variables (sources of data) are typically defined as upper bounded wildcards.
+ * * "Out" variables (destinations of data) are typically defined as lower bounded wildcards.
+ * * If an "In" variable can be accessed using only {@code Object} methods, use an unbounded wildcard.
+ * * In the case where a variable is both "In" and "Out", do not use a wildcard.
+ *
+ * Do not use wildcards as return types
+ *
  */
 public class WildcardFunctions {
 
@@ -30,13 +38,6 @@ public class WildcardFunctions {
             total += n.doubleValue();
         }
         return total;
-    }
-
-    /**
-     *
-     */
-    public static <T> List<T> toList(T elt) {
-        return new List.of(elt);
     }
 
     /**
