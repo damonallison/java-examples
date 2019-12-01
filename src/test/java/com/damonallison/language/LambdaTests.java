@@ -1,7 +1,7 @@
 package com.damonallison.language;
 
-import com.damonallison.classes.Bike;
-import com.damonallison.classes.Bike.BikeBuilder;
+import com.damonallison.classes.inheritance.Bike;
+import com.damonallison.classes.inheritance.Bike.BikeBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

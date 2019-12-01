@@ -1,13 +1,16 @@
-package com.damonallison.classes;
+package com.damonallison.classes.inheritance;
 
 /**
  * The bike class shows various class features that are a bit more advanced.
  *
  * <ul>
+ *
  * <li>
  * Initializer blocks : static and instance initializer blocks are executed
  * prior to the first usage of a class (static initializer blocks) or an
  * instance of the class (instance initializer blocks)
+ * </li>
+ *
  * <li>
  * Nested classes (static and inner classes).
  * <p>
@@ -15,20 +18,23 @@ package com.damonallison.classes;
  * discouraged. Inner classes are compiled into "synthetic constructs" that
  * differ between JVM implementations. If you serialize an inner class, it may
  * not be compatible with another JVM implementation.
+ * </li>
  * <li>
  * Builder pattern
+ * </li>
  * <li>
  * Fluid Interface : A fluid interface returns the current object instance
  * itself which allows you to chain multiple calls together.
- *
  * <code>
  * Bike.Builder b = new Bike.BikeBuilder();
  * b.setSpeed(10)
  * .setWheelCount(2)
  * .setGear(100);
  * </code>
+ * </li>
  * <li>
  * Finalizers
+ * </li>
  * <li>
  * Overriding {@link Object} members.
  * <p>
@@ -131,6 +137,11 @@ public class Bike extends AbstractBike implements IBike, Cloneable {
         if (this.getWheelCount() < 0) {
             throw new IllegalArgumentException("wheelCount must be >= 0");
         }
+    }
+
+    @Override
+    public String ride() {
+        return String.format("I'm riding my %d speed bike", this.getSpeed());
     }
 
     /**

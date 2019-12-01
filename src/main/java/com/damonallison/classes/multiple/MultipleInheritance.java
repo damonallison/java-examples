@@ -14,6 +14,9 @@ public class MultipleInheritance implements Interface1, Interface2 {
      * <p>
      * In order to prevent compile errors, you must override the default
      * implementations.
+     *
+     * You can invoke a supertype's implementation by invoking it explicitly with
+     * Type.super.method()
      */
     @Override
     public int getValue() {

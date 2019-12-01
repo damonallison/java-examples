@@ -1,7 +1,10 @@
 package com.damonallison.classes;
 
-import com.damonallison.classes.Bike.BikeBuilder;
-import com.damonallison.classes.MountainBike.MountainBikeBuilder;
+import com.damonallison.classes.inheritance.Bike;
+import com.damonallison.classes.inheritance.Bike.BikeBuilder;
+import com.damonallison.classes.inheritance.IBike;
+import com.damonallison.classes.inheritance.MountainBike;
+import com.damonallison.classes.inheritance.MountainBike.MountainBikeBuilder;
 import com.damonallison.classes.multiple.MultipleInheritance;
 import org.junit.jupiter.api.Test;
 
@@ -204,7 +207,14 @@ class ClassTests {
         // instanceof will determine if an object is of a particular type
         Bike b = BikeBuilder.newBuilder().setGear(1).setSpeed(2).setWheelCount(2).build();
         assertTrue(b instanceof Bike);
+        assertTrue(b instanceof Object);
         assertFalse(b instanceof MountainBike);
+
+        //
+        // The .ride() shows how an overridden method has access to super() to access fields / call
+        // methods on a superclass.
+        //
+        assertTrue(mb.ride().contains("MountainBike") && mb.ride().contains("speed bike"));
     }
 
     /**

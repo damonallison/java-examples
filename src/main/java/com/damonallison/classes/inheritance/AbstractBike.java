@@ -1,4 +1,4 @@
-package com.damonallison.classes;
+package com.damonallison.classes.inheritance;
 
 /**
  * Abstract classes allow you to define a base implementation for like classes to derive from.
@@ -15,6 +15,10 @@ public abstract class AbstractBike {
 
     public int getGear() {
         return gear;
+    }
+
+    public String ride() {
+        return null;
     }
 
 }

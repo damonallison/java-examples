@@ -1,4 +1,4 @@
-package com.damonallison.classes;
+package com.damonallison.classes.inheritance;
 
 public class MountainBike extends Bike {
 
@@ -16,6 +16,11 @@ public class MountainBike extends Bike {
         super(speed, gear, wheelCount);
         this.maxElevation = maxElevation;
         validateState();
+    }
+
+    @Override
+    public String ride() {
+        return String.format("MountainBike says: %s", super.ride());
     }
 
     private void validateState() throws IllegalArgumentException {

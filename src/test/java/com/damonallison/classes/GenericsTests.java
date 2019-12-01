@@ -103,11 +103,11 @@ class GenericsTests {
      * *not* related, even if their parameters are related.
      *
      * <pre>
-     * For example: {@code Box<Number> and Box<Integer> are not related. You cannot pass a Box<Integer> value into a method declared :
+     * For example: {@code WildcardFunctions<Number> and WildcardFunctions<Integer> are not related. You cannot pass a WildcardFunctions<Integer> value into a method declared :
      *
-     * void printBox(Box<Number> num);
+     * void printBox(WildcardFunctions<Number> num);
      *
-     * Even tho Integer extends Number. The common parent of Box<Number> and Box<Integer> is Object.
+     * Even tho Integer extends Number. The common parent of WildcardFunctions<Number> and WildcardFunctions<Integer> is Object.
      * </pre>
      * <p>
      * You can subtype a generic class by extending it. {@link SuperPair }
@@ -121,100 +121,6 @@ class GenericsTests {
         assertEquals("SuperPair[damon,allison]", sp.toString());
         assertEquals("Key = damon Value = allison", printPair(sp));
 
-    }
-
-    /**
-     * The following method takes a parameter (lst) which has an unbounded
-     * wildcard.
-     * <p>
-     * An unbounded wildcard. Useful if you don't need to know or use the type
-     * parameter.
-     * <p>
-     * A wildcard is preferred over List<Object>. If you used List<Object>, you
-     * couldn't print a list of List<Integer> since List<Integer> is not a
-     * subtype of List<Object>
-     */
-    private void printListWithWildcard(List<?> lst) {
-
-    }
-
-    /**
-     * This will *not* print a list of List<Integer> since List<Integer> is not
-     * a subtype of List<Object>.
-     */
-    private void printListWithoutWildcard(List<Object> lst) {
-
-    }
-
-    /**
-     * Upper bound wildcards specify that the type parameter must be equal to or
-     * lower in the type hierarchy. (Object being the top of the hierarchy).
-     */
-    private void printListWithUpperBoundedWildcard(
-            List<? extends Serializable> lst) {
-
-    }
-
-    /**
-     * Lower bound wildcards specify that the type parameter must be equal to or
-     * higher in the type hierarchy. (Object being the top of the hierarchy).
-     * <p>
-     * In this example, the type parameter must be Integer, Number, or Object.
-     */
-    private void printListWithLowerBoundedWildcard(List<? super Integer> lst) {
-
-    }
-
-    /**
-     * Wildcards represent an unknown type. Wildcards can be upper or lower
-     * bounded.
-     * <p>
-     * When to use upper and lower bounded variables? * Define "in" variables
-     * with upper bounded wildcards (extends). This forces data coming into the
-     * application to be at least of a certain type. * Define "out" variables
-     * with a lower bounded wildcards (super). This forces data going out from
-     * the application to be at least of a certain type. * If you don't need to
-     * know the exact type (or only need methods defined on {@link Object}, use
-     * an unbounded wildcard. * If your code needs to access the variable as
-     * both "in" and "out" fashions, don't use a wilcard!
-     * <p>
-     * * Don't use a wildcard for a method's return type! It forces the caller
-     * to deal with wildcards!
-     * <p>
-     * Wildcards are important when dealing with generic types. Because
-     * List<Object> is not a supertype of List<Integer>, List<?> creates a
-     * common parent for both of these types in the type hierarchy.
-     * <p>
-     * List<?> List<Object> List<Integer>
-     */
-    @Test
-    void testWildcards() {
-
-        // Wildcards allow any type.
-        this.printListWithWildcard(new ArrayList<List<Integer>>()); // OK
-
-        // You can't use "Object" in place of a wildcard when dealing with
-        // generic type parameters.
-        // List<Integer> is not a subtype of List<Object>, for example:
-        this.printListWithoutWildcard(new ArrayList<Object>());
-        // this.printListWithoutWildcard(new ArrayList<Integer>()); // Fails :
-        // ArrayList<Integer> is not a subtype of List<Object>!
-
-        this.printListWithUpperBoundedWildcard(new ArrayList<String>());
-
-        this.printListWithLowerBoundedWildcard(new ArrayList<Number>());
-
-        List<? extends Integer> intList = new ArrayList<>();
-        List<? extends Number> numList = intList; // Allowed since <? extends
-        assertEquals(numList, intList);
-
-        /*-
-         * List<Number> is not a supertype of List<Integer>, therefore
-         * the following assignment will fail.
-         */
-
-        // List<Integer> intList2 = new ArrayList<>();
-        // List<Number> numList2 = intList2;
     }
 
     /*-

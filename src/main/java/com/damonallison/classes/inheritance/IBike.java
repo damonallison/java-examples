@@ -1,4 +1,4 @@
-package com.damonallison.classes;
+package com.damonallison.classes.inheritance;
 
 /**
  * Interfaces are reference types, similar to a class, that can only contain
