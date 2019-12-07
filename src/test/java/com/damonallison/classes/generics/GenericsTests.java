@@ -93,7 +93,7 @@ class GenericsTests {
      * Inheritance
      * <p>
      * <p>
-     * It's important to note that generic types with different parameters are
+     * It's important to note that generic types with different type parameters are
      * *not* related, even if their parameters are related.
      *
      * <pre>
@@ -103,7 +103,8 @@ class GenericsTests {
      *
      * void printBox(WildcardFunctions<Number> num);
      *
-     * Even tho Integer extends Number. The common parent of WildcardFunctions<Number> and WildcardFunctions<Integer> is Object.
+     * Even tho Integer extends Number. The common parent of WildcardFunctions<Number>
+     *     and WildcardFunctions<Integer> is Object, not WildcardFunctions<Number>
      * </pre>
      * <p>
      * You can subtype a generic class by extending it. {@link SuperPair }
@@ -113,9 +114,12 @@ class GenericsTests {
      */
     @Test
     void testGenericInheritance() {
-        SuperPair<String, String> sp = new SuperPair<>("damon", "allison");
-        assertEquals("SuperPair[damon,allison]", sp.toString());
-        assertEquals("Key = damon Value = allison", printPair(sp));
+        List<Pair<String, String>> pairs = new ArrayList<>();
+        pairs.add(new SuperPair<>("damon", "allison"));
+        pairs.add(new Pair<>("damon", "allison"));
+
+        assertEquals("SuperPair[damon,allison]", pairs.get(0).toString());
+        assertEquals("key = damon value = allison", pairs.get(1).toString());
 
         //
         // Note: You *cannot* use generics with instanceof due to type erasure.
@@ -125,6 +129,23 @@ class GenericsTests {
         // assertTrue(sp instanceof SuperPair<String, String>)
         //
         // You *can* use the underlying
-        assertTrue(sp instanceof SuperPair);
+        assertTrue(pairs.get(0) instanceof SuperPair);
+
+        assertTrue(pairs instanceof ArrayList);
+        assertEquals("ArrayList", getName(pairs));
+        assertEquals("ArrayList", getName(new ArrayList<SuperPair<String, String>>()));
+
+    }
+
+    /**
+     * Wildcards allow you to pass any type with an upper bound (extends) or lower bound (super).
+     *
+     * Upper bound (extends): Accepts the given type or a subtype.
+     * Lower bound (super): Accepts the given type or super type.
+     * @param list Any {@code List<Pair<String, String>>} list.
+     * @return the name of the type. Notice the type parameters are *not* included.
+     */
+    private static String getName(List<? extends Pair<? extends String, ? extends String>> list) {
+        return list.getClass().getSimpleName();
     }
 }

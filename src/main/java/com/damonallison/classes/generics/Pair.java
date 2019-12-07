@@ -12,8 +12,8 @@ public class Pair<K, V> implements Serializable {
 
     private static final long serialVersionUID = -8637965096833519043L;
 
-    private K key;
-    private V value;
+    private final K key;
+    private final V value;
 
     public Pair(K key, V value) {
         this.key = key;
@@ -64,6 +64,11 @@ public class Pair<K, V> implements Serializable {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("key = %s value = %s", this.key.toString(), this.value.toString());
     }
 
 }
