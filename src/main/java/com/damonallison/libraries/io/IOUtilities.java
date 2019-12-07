@@ -80,10 +80,8 @@ public final class IOUtilities {
         // BufferedInputStream / BufferedOutputStream - buffered byte streams.
         // BufferedReader / BufferedWriter - buffered character streams.
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(
-                in.toFile()));
-             PrintWriter writer = new PrintWriter(new FileWriter(
-                     out.toFile()))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(in.toFile()));
+             PrintWriter writer = new PrintWriter(new FileWriter(out.toFile()))) {
 
             String line;
             while ((line = reader.readLine()) != null) {
@@ -105,8 +103,7 @@ public final class IOUtilities {
         Preconditions.checkNotNull(out);
         Preconditions.checkArgument(headers.size() == values.size());
 
-        try (DataOutputStream outputStream = new DataOutputStream(
-                new FileOutputStream(out.toFile()))) {
+        try (DataOutputStream outputStream = new DataOutputStream(new FileOutputStream(out.toFile()))) {
 
             for (int i = 0; i < headers.size(); i++) {
                 outputStream.writeUTF(headers.get(i));
