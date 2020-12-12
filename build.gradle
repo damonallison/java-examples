@@ -19,6 +19,7 @@ dependencies {
     // Purely internal, not meant to be exposed to consumers.
     //
     implementation 'com.google.guava:guava:28.1-jre'
+    implementation 'com.squareup.okhttp3:okhttp:4.3.0'
 
     //
     // testImplementation
